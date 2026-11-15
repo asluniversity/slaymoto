@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05080d">
+  <meta name="description" content="SLAY MOTO — a refined ride tracking and navigation companion for motorcyclists.">
+  <title>SLAY MOTO — Ride with clarity</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Slay Moto home">
+        <span class="brand-mark">S</span>
+        <span class="brand-copy"><strong>SLAY MOTO</strong><small>RIDE WITH CLARITY</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="gps-status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
+        <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
+        <button class="avatar" aria-label="Profile">R</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">YOUR RIDE, BEAUTIFULLY MEASURED</p>
+          <h1>Every road has<br><em>a story.</em></h1>
+          <p class="hero-sub">A focused riding companion for the moments that matter. Track your ride, understand your route, and stay aware of what’s ahead.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="startBtn"><span class="play">▶</span> START RIDE</button>
+            <button class="secondary-btn" id="planBtn">PLAN A ROUTE <span>↗</span></button>
+          </div>
+          <div class="hero-footnote"><span class="pulse"></span> BUILT FOR THE OPEN ROAD</div>
+        </div>
+        <div class="hero-visual" role="img" aria-label="Motorcycle on a mountain road">
+          <div class="visual-overlay"></div>
+          <div class="visual-caption"><span>01 / THE RIDE</span><b>Find your line.</b></div>
+        </div>
+      </section>
+
+      <section class="ride-layout" id="rideSection">
+        <div class="section-heading">
+          <div><p class="eyebrow">LIVE RIDE CONSOLE</p><h2>Your ride, in real time.</h2></div>
+          <span class="live-pill" id="rideState"><i></i> READY</span>
+        </div>
+        <div class="console-grid">
+          <div class="map-panel">
+            <div class="map-topline"><span>LIVE ROUTE MAP</span><span id="mapHint">Waiting for GPS</span></div>
+            <div id="map" aria-label="Live ride map"></div>
+            <div class="hud" id="hud" hidden><div class="hud-t"><b id="hudTarget">--</b><small>TARGET km/h</small></div><div class="hud-m"><span id="hudMsg"></span><small id="hudDist"></small></div></div>
+            <div class="map-controls">
+              <button id="locateBtn" class="map-control" title="Locate me">◎</button>
+              <button id="clearRouteBtn" class="map-control" title="Clear route">↺</button>
+            </div>
+            <div class="map-legend"><span><i class="legend-line"></i> YOUR TRACK</span><span><i class="legend-dot"></i> CURRENT POSITION</span></div>
+          </div>
+          <aside class="stats-panel">
+            <div class="stats-header"><span>RIDE SUMMARY</span><span class="subtle">SESSION 01</span></div>
+            <div class="main-stat"><small>DISTANCE</small><strong id="distance">0.00 <small>km</small></strong></div>
+            <div class="stat-pair">
+              <div><small>ELAPSED TIME</small><strong id="elapsed">00:00:00</strong></div>
+              <div><small>AVG. SPEED</small><strong id="avgSpeed">— <small>km/h</small></strong></div>
+            </div>
+            <div class="stat-pair">
+              <div><small>LIVE SPEED</small><strong id="liveSpeed">— <small>km/h</small></strong></div>
+              <div><small>MAX SPEED</small><strong id="maxSpeed">— <small>km/h</small></strong></div>
+            </div>
+            <div class="details">
+              <div class="wide"><small>START POINT (YOUR LOCATION)</small><b id="dStart">—</b></div>
+              <div class="wide"><small>NOW AT</small><b id="dNow">—</b></div>
+              <div><small>START TIME</small><b id="dStartTime">—</b></div><div><small>HEADING</small><b id="dHead">—</b></div>
+              <div><small>ALTITUDE</small><b id="dAlt">—</b></div><div><small>GPS ACCURACY</small><b id="dAcc">—</b></div>
+            </div>
+            <div class="guide-set"><label>RIDING STYLE<select id="profileSel"><option value="calm">Calm</option><option value="normal" selected>Normal</option><option value="sport">Sport</option></select></label><label class="chk"><input type="checkbox" id="voiceChk" checked> VOICE ALERTS</label></div>
+            <div class="ride-actions">
+              <button class="primary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
+              <button class="end-btn wide" id="endBtn" disabled>END RIDE</button>
+            </div>
+            <p class="privacy-note">Location is used only while this ride session is active. Keep your phone securely mounted and never interact with the screen while moving.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="guidance-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">ROAD AWARENESS</p><h2>Clear information. Better decisions.</h2></div>
+          <span class="section-note">ASSISTIVE GUIDANCE</span>
+        </div>
+        <div class="guidance-grid">
+          <article class="guidance-card">
+            <div class="guidance-icon turquoise">⌁</div><div><h3>Route awareness</h3><p>See your recorded path on a real map, with your current position and ride progress.</p></div>
+          </article>
+          <article class="guidance-card">
+            <div class="guidance-icon amber">!</div><div><h3>Curve context</h3><p>Future versions can use verified road geometry and route data to flag upcoming bends.</p></div>
+          </article>
+          <article class="guidance-card">
+            <div class="guidance-icon red">＋</div><div><h3>Safety first</h3><p>Visual cues are informational only—not a speed recommendation or a substitute for road judgment.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="history-section">
+        <div class="section-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h2>Recent rides.</h2></div><button class="text-btn" id="clearHistoryBtn">CLEAR HISTORY</button></div>
+        <div id="historyList" class="history-list"><div class="empty-state">Your completed rides will appear here.</div></div>
+      </section>
+    </main>
+
+    <footer><span>SLAY MOTO</span><span>RIDE RESPONSIBLY · STAY PRESENT</span><span>© 2026</span></footer>
+  </div>
+
+  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RIDE</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
+
+  <div class="modal-backdrop" id="routeModal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+      <p class="eyebrow">ROUTE PLANNER</p><h2>Where to?</h2>
+      <p class="modal-copy">Enter a destination to draw a suggested route. Route planning requires an internet connection and is provided as a convenience, not as certified motorcycle navigation.</p>
+      <label for="destination">DESTINATION</label>
+      <input id="destination" type="text" placeholder="e.g. Brandenburg Gate, Berlin">
+      <div class="modal-actions"><button class="secondary-btn" id="cancelPlan">CANCEL</button><button class="primary-btn" id="findRoute">FIND ROUTE</button><button class="primary-btn" id="startRouteBtn" hidden>START RIDE NOW</button></div>
+      <p id="routeMessage" class="form-message" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="guidance.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

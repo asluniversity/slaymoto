@@ -1,0 +1,19 @@
+{
+  "name": "SLAY MOTO \u2014 Ride with clarity",
+  "short_name": "SLAY MOTO",
+  "description": "A refined ride tracking companion for motorcyclists.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05080d",
+  "theme_color": "#05080d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
