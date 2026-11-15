@@ -15,8 +15,7 @@
   <div class="app-shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Slay Moto home">
-        <span class="brand-mark">S</span>
-        <span class="brand-copy"><strong>SLAY MOTO</strong><small>RIDE WITH CLARITY</small></span>
+        <img class="logo" src="assets/logo.png" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
       </a>
       <div class="top-actions">
         <span class="gps-status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
@@ -28,19 +27,32 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">YOUR RIDE, BEAUTIFULLY MEASURED</p>
-          <h1>Every road has<br><em>a story.</em></h1>
-          <p class="hero-sub">A focused riding companion for the moments that matter. Track your ride, understand your route, and stay aware of what’s ahead.</p>
+          <p class="eyebrow">RACING · PERFORMANCE · LIFESTYLE</p>
+          <h1>Race the road.<br><em>Own every corner.</em></h1>
+          <p class="hero-sub">Slay Moto turns your phone into a racing co-pilot. Start from your exact location, see every bend colored ahead of you, and get live cues before the corner arrives — then relive the lap as a shareable route image.</p>
           <div class="hero-actions">
             <button class="primary-btn" id="startBtn"><span class="play">▶</span> START RIDE</button>
             <button class="secondary-btn" id="planBtn">PLAN A ROUTE <span>↗</span></button>
           </div>
-          <div class="hero-footnote"><span class="pulse"></span> BUILT FOR THE OPEN ROAD</div>
+          <div class="hero-footnote"><span class="pulse"></span> RACING. FASTER. FOREVER.</div>
         </div>
-        <div class="hero-visual" role="img" aria-label="Motorcycle on a mountain road">
+        <div class="hero-visual" role="img" aria-label="SLAY rider leaning into a corner on a race track">
           <div class="visual-overlay"></div>
-          <div class="visual-caption"><span>01 / THE RIDE</span><b>Find your line.</b></div>
+          <div class="visual-caption"><span>01 / THE LINE</span><b>Find your line.</b></div>
         </div>
+      </section>
+
+      <div class="strip"><span>LIVE GPS</span><i></i><span>RIDE TIMER</span><i></i><span>ROUTE MAP</span><i></i><span>CORNER ALERTS</span><i></i><span>LAP IMAGE</span></div>
+
+      <section class="how">
+        <div class="how-img"><img src="assets/paddock.jpg" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy"><span>PADDOCK · READY</span></div>
+        <div class="how-copy"><p class="eyebrow">HOW IT WORKS</p><h2>From the pit to the apex.</h2>
+          <ol class="steps">
+            <li><b>01</b><div><h3>Lock your position</h3><p>Slay Moto finds your exact GPS location, names your start point and starts the clock the moment you go.</p></div></li>
+            <li><b>02</b><div><h3>Pick your line</h3><p>Plan a route from where you stand. Every bend is analysed and painted on the map before you reach it.</p></div></li>
+            <li><b>03</b><div><h3>Ride with live cues</h3><p>A game-style speed bar, voice alerts and vibration tell you when to ease off and when to brake for the corner.</p></div></li>
+            <li><b>04</b><div><h3>Relive the lap</h3><p>Finish and get an image of the exact shape of your route, with time, distance, average and top speed.</p></div></li>
+          </ol></div>
       </section>
 
       <section class="ride-layout" id="rideSection">
@@ -88,21 +100,28 @@
 
       <section class="guidance-section">
         <div class="section-heading">
-          <div><p class="eyebrow">ROAD AWARENESS</p><h2>Clear information. Better decisions.</h2></div>
+          <div><p class="eyebrow">ROAD AWARENESS</p><h2>Read the road like a racing game.</h2></div>
           <span class="section-note">ASSISTIVE GUIDANCE</span>
         </div>
-        <div class="guidance-grid">
-          <article class="guidance-card">
-            <div class="guidance-icon turquoise">⌁</div><div><h3>Route awareness</h3><p>See your recorded path on a real map, with your current position and ride progress.</p></div>
-          </article>
-          <article class="guidance-card">
-            <div class="guidance-icon amber">!</div><div><h3>Curve context</h3><p>Future versions can use verified road geometry and route data to flag upcoming bends.</p></div>
-          </article>
-          <article class="guidance-card">
-            <div class="guidance-icon red">＋</div><div><h3>Safety first</h3><p>Visual cues are informational only—not a speed recommendation or a substitute for road judgment.</p></div>
-          </article>
+        <div class="guidance-grid legend">
+          <article class="guidance-card"><i class="dot" style="--c:#4fd18b"></i><div><h3>Green · Speed OK</h3><p>Your speed fits the road ahead. Stay smooth and keep your line.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e7d25b"></i><div><h3>Yellow · Ease off</h3><p>You are a little fast for what is coming. Roll off the throttle.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e58b52"></i><div><h3>Orange · Slow down</h3><p>Too fast for the next section. Voice and vibration alert you.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e5554f"></i><div><h3>Red · Corner ahead</h3><p>A sharp bend is coming. Bring your speed right down before you reach it.</p></div></article>
+        </div>
+        <p class="legal">Guidance is advisory and based on route geometry only. It cannot see surface, weather, traffic or legal limits. Always ride to the conditions and obey local law.</p>
+      </section>
+
+      <section class="world">
+        <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
+        <div class="world-grid">
+          <figure class="tall"><img src="assets/hoodie.jpg" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
+          <figure><img src="assets/car1.jpg" alt="SLAY racing division car on track" loading="lazy"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
+          <figure><img src="assets/car2.jpg" alt="SLAY race car in the rain" loading="lazy"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
         </div>
       </section>
+
+      <section class="cta"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Start your first lap.</h2><p>Allow location, tap start, and let Slay Moto handle the rest.</p></div><button class="primary-btn" id="ctaStart"><span class="play">▶</span> START RIDE</button></section>
 
       <section class="history-section">
         <div class="section-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h2>Recent rides.</h2></div><button class="text-btn" id="clearHistoryBtn">CLEAR HISTORY</button></div>
