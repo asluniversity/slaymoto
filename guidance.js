@@ -4,7 +4,7 @@ const Guide=(()=>{
 const P={calm:{lat:2.4,brake:2.2,cap:80},normal:{lat:3.0,brake:2.8,cap:100},sport:{lat:3.6,brake:3.4,cap:120}};
 const STEP=8,R=6371000,rad=d=>d*Math.PI/180,deg=r=>r*180/Math.PI;
 const COL={g:'#4fd18b',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
-let prof='normal',voice=true,o=null,pts=[],rs=[],raw=[],lim=[],idx=0,last='g',lastSay=0;
+let cb=null,prof='normal',voice=true,o=null,pts=[],rs=[],raw=[],lim=[],idx=0,last='g',lastSay=0;
 const $=id=>document.getElementById(id);
 const xy=(lat,lng)=>({x:rad(lng-o.lng)*R*Math.cos(rad(o.lat)),y:rad(lat-o.lat)*R});
 function build(){const p=P[prof],n=pts.length;
@@ -40,19 +40,19 @@ function update(p,spd){
   if(!pts.length)return;const c=xy(p.lat,p.lng);let best=-1,bd=1e12;
   const scan=(a,b)=>{for(let i=a;i<=b;i++){const d=(pts[i].x-c.x)**2+(pts[i].y-c.y)**2;if(d<bd){bd=d;best=i;}}};
   scan(Math.max(0,idx-10),Math.min(pts.length-1,idx+120));if(bd>2500)scan(0,pts.length-1);
-  if(bd>3600){hud('o','OFF ROUTE',null,null);return;}
+  if(bd>3600){hud('o','OFF ROUTE',null,null);cb&&cb({l:'o',msg:'OFF ROUTE',off:1});return;}
   idx=best;if(spd==null)return;
-  const allowed=lim[idx]*3.6;let cd=null,ct=null;
-  for(let j=idx;j<Math.min(pts.length,idx+60);j++)if(raw[j]*3.6<60){cd=(j-idx)*STEP;ct=Math.min(...raw.slice(j,j+9))*3.6;break;}
+  const allowed=lim[idx]*3.6;let cd=null,ct=null,cr=null;
+  for(let j=idx;j<Math.min(pts.length,idx+60);j++)if(raw[j]*3.6<60){cd=(j-idx)*STEP;ct=Math.min(...raw.slice(j,j+9))*3.6;cr=Math.min(...rs.slice(j,j+9));break;}
   const ratio=spd/allowed;let l=ratio<=1?'g':ratio<=1.12?'y':ratio<=1.3?'o':'r';
   if(cd!==null&&ct<40&&ratio>1.05)l='r';
   const msg={g:'SPEED OK',y:'EASE OFF',o:'SLOW DOWN',r:cd!==null?'CORNER AHEAD — BRAKE':'TOO FAST'}[l];
-  hud(l,msg,Math.round(allowed/5)*5,cd);
+  hud(l,msg,Math.round(allowed/5)*5,cd);cb&&cb({l,msg,allowed,cd,ct,cr,spd});
   const now=Date.now();
   if((l==='o'||l==='r')&&(l!==last||now-lastSay>9000)){lastSay=now;say(l==='r'&&cd!==null?`Corner ahead. Slow to ${Math.round(ct/5)*5}`:'Slow down',l);}
   last=l;
 }
 function reset(){idx=0;last='g';}
 function clear(){pts=[];rs=[];raw=[];lim=[];const h=$('hud');if(h)h.hidden=true;}
-return{draw,update,reset,clear,setProfile:v=>{prof=v;if(pts.length)build();},setVoice:v=>{voice=v;}};
+return{onInfo:f=>{cb=f;},hasRoute:()=>pts.length>0,draw,update,reset,clear,setProfile:v=>{prof=v;if(pts.length)build();},setVoice:v=>{voice=v;}};
 })();
