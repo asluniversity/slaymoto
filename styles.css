@@ -98,11 +98,14 @@ body{background:radial-gradient(900px 500px at 85% -5%,rgba(56,189,248,.16),tran
 @media(max-width:850px){.race-grid{grid-template-columns:1fr}.race-map,#raceMap{min-height:340px}.nav{display:none}.copilot-promo{padding:24px}}
 
 .cp-top{display:flex;justify-content:space-between;gap:10px}.cp-lean small#cpSrc{font-size:9px;color:var(--muted);letter-spacing:.12em}
-/* ---- v7 mobile bottom nav ---- */
+/* ---- v8 mobile nav (outside the glass topbar so it stays fixed to the screen) ---- */
 html{scroll-padding-top:90px}
+.nav-m{display:none}
 @media(max-width:850px){
-.nav{display:flex;position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:1200;justify-content:space-around;gap:0;padding:6px;border-radius:18px;background:rgba(11,17,24,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.6)}
-.nav a{flex:1;text-align:center;padding:13px 4px;border-radius:12px;font-size:11px;color:var(--text)}
-.nav a:active{background:rgba(56,189,248,.18);color:var(--tiffany2)}
+.topbar .nav{display:none}
+.nav-m{display:flex;position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:1200;justify-content:space-around;padding:6px;border-radius:18px;background:rgba(11,17,24,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.nav-m a{flex:1;text-align:center;padding:13px 4px;border-radius:12px;font-size:11px;letter-spacing:.2em;font-weight:700;color:var(--text);text-decoration:none}
+.nav-m a:active{background:rgba(56,189,248,.18);color:var(--tiffany2)}
 body{padding-bottom:84px}
 }
+@media(max-width:520px){.topbar{height:64px;gap:8px}.logo{height:34px}.brand{gap:8px}.brand-copy small{display:none}.top-actions{gap:8px}}
