@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#05080d">
   <meta name="description" content="SLAY MOTO — a refined ride tracking and navigation companion for motorcyclists.">
   <title>SLAY MOTO — Ride with clarity</title>
+  <link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
@@ -15,7 +17,7 @@
   <div class="app-shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Slay Moto home">
-        <img class="logo" src="assets/logo.png" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
+        <img class="logo" fetchpriority="high" width="46" height="46" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
       </a>
       <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#copilotSection">CO-PILOT</a></nav>
       <div class="top-actions">
@@ -46,7 +48,7 @@
       <div class="strip"><span>LIVE GPS</span><i></i><span>RIDE TIMER</span><i></i><span>ROUTE MAP</span><i></i><span>CORNER ALERTS</span><i></i><span>LAP IMAGE</span></div>
 
       <section class="how">
-        <div class="how-img"><img src="assets/paddock.jpg" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy"><span>PADDOCK · READY</span></div>
+        <div class="how-img"><img src="assets/paddock.webp" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy" decoding="async"><span>PADDOCK · READY</span></div>
         <div class="how-copy"><p class="eyebrow">HOW IT WORKS</p><h2>From the pit to the apex.</h2>
           <ol class="steps">
             <li><b>01</b><div><h3>Lock your position</h3><p>Slay Moto finds your exact GPS location, names your start point and starts the clock the moment you go.</p></div></li>
@@ -142,9 +144,9 @@
       <section class="world">
         <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
         <div class="world-grid">
-          <figure class="tall"><img src="assets/hoodie.jpg" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
-          <figure><img src="assets/car1.jpg" alt="SLAY racing division car on track" loading="lazy"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
-          <figure><img src="assets/car2.jpg" alt="SLAY race car in the rain" loading="lazy"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
+          <figure class="tall"><img src="assets/hoodie.webp" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
+          <figure><img src="assets/car1.webp" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
+          <figure><img src="assets/car2.webp" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
         </div>
       </section>
 
@@ -160,11 +162,11 @@
   </div>
 
   <div class="copilot" id="copilot" hidden>
-    <button class="cp-close" id="cpClose">✕ EXIT</button>
+    <div class="cp-top"><button class="cp-close" id="cpCal">⊙ CALIBRATE UPRIGHT</button><button class="cp-close" id="cpClose">✕ EXIT</button></div>
     <div class="cp-msg" id="cpMsg">WAITING FOR GPS…</div>
     <div class="cp-speed"><b id="cpSpeed">0</b><small>km/h</small><span>TARGET <b id="cpTarget">--</b></span></div>
     <div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div>
-    <div class="cp-lean"><div class="cp-bike" id="cpBike"></div><b id="cpLean">0°</b><small id="cpSide">UPRIGHT</small><em id="cpMax">MAX L 0° · MAX R 0°</em></div>
+    <div class="cp-lean"><div class="cp-bike" id="cpBike"></div><b id="cpLean">0°</b><small id="cpSide">UPRIGHT</small><em id="cpMax">MAX L 0° · MAX R 0°</em><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, TAP THE BUTTON</small></div>
   </div>
 
   <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RIDE</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
