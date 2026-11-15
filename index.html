@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05080d">
+  <meta name="description" content="SLAY MOTO — a refined ride tracking and navigation companion for motorcyclists.">
+  <title>SLAY MOTO — Ride with clarity</title>
+  <link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Slay Moto home">
+        <img class="logo" fetchpriority="high" width="46" height="46" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
+      </a>
+      <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#copilotSection">CO-PILOT</a></nav>
+      <div class="top-actions">
+        <span class="gps-status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
+        <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
+        <button class="avatar" aria-label="Profile">R</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">RACING · PERFORMANCE · LIFESTYLE</p>
+          <h1>Race the road.<br><em>Own every corner.</em></h1>
+          <p class="hero-sub">Slay Moto turns your phone into a racing co-pilot. Start from your exact location, see every bend colored ahead of you, and get live cues before the corner arrives — then relive the lap as a shareable route image.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="startBtn"><span class="play">▶</span> START RIDE</button>
+            <button class="secondary-btn" id="planBtn">PLAN A ROUTE <span>↗</span></button>
+          </div>
+          <div class="hero-footnote"><span class="pulse"></span> RACING. FASTER. FOREVER.</div>
+        </div>
+        <div class="hero-visual" role="img" aria-label="SLAY rider leaning into a corner on a race track">
+          <div class="visual-overlay"></div>
+          <div class="visual-caption"><span>01 / THE LINE</span><b>Find your line.</b></div>
+        </div>
+      </section>
+
+      <div class="strip"><span>LIVE GPS</span><i></i><span>RIDE TIMER</span><i></i><span>ROUTE MAP</span><i></i><span>CORNER ALERTS</span><i></i><span>LAP IMAGE</span></div>
+
+      <section class="how">
+        <div class="how-img"><img src="assets/paddock.webp" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy" decoding="async"><span>PADDOCK · READY</span></div>
+        <div class="how-copy"><p class="eyebrow">HOW IT WORKS</p><h2>From the pit to the apex.</h2>
+          <ol class="steps">
+            <li><b>01</b><div><h3>Lock your position</h3><p>Slay Moto finds your exact GPS location, names your start point and starts the clock the moment you go.</p></div></li>
+            <li><b>02</b><div><h3>Pick your line</h3><p>Plan a route from where you stand. Every bend is analysed and painted on the map before you reach it.</p></div></li>
+            <li><b>03</b><div><h3>Ride with live cues</h3><p>A game-style speed bar, voice alerts and vibration tell you when to ease off and when to brake for the corner.</p></div></li>
+            <li><b>04</b><div><h3>Relive the lap</h3><p>Finish and get an image of the exact shape of your route, with time, distance, average and top speed.</p></div></li>
+          </ol></div>
+      </section>
+
+      <section class="ride-layout" id="rideSection">
+        <div class="section-heading">
+          <div><p class="eyebrow">LIVE RIDE CONSOLE</p><h2>Your ride, in real time.</h2></div>
+          <span class="live-pill" id="rideState"><i></i> READY</span>
+        </div>
+        <div class="console-grid">
+          <div class="map-panel">
+            <div class="map-topline"><span>LIVE ROUTE MAP</span><span id="mapHint">Waiting for GPS</span></div>
+            <div id="map" aria-label="Live ride map"></div>
+            <div class="hud" id="hud" hidden><div class="hud-t"><b id="hudTarget">--</b><small>TARGET km/h</small></div><div class="hud-m"><span id="hudMsg"></span><small id="hudDist"></small></div></div>
+            <div class="map-controls">
+              <button id="locateBtn" class="map-control" title="Locate me">◎</button>
+              <button id="clearRouteBtn" class="map-control" title="Clear route">↺</button>
+            </div>
+            <div class="map-legend"><span><i class="legend-line"></i> YOUR TRACK</span><span><i class="legend-dot"></i> CURRENT POSITION</span></div>
+          </div>
+          <aside class="stats-panel">
+            <div class="stats-header"><span>RIDE SUMMARY</span><span class="subtle">SESSION 01</span></div>
+            <div class="main-stat"><small>DISTANCE</small><strong id="distance">0.00 <small>km</small></strong></div>
+            <div class="stat-pair">
+              <div><small>ELAPSED TIME</small><strong id="elapsed">00:00:00</strong></div>
+              <div><small>AVG. SPEED</small><strong id="avgSpeed">— <small>km/h</small></strong></div>
+            </div>
+            <div class="stat-pair">
+              <div><small>LIVE SPEED</small><strong id="liveSpeed">— <small>km/h</small></strong></div>
+              <div><small>MAX SPEED</small><strong id="maxSpeed">— <small>km/h</small></strong></div>
+            </div>
+            <div class="details">
+              <div class="wide"><small>START POINT (YOUR LOCATION)</small><b id="dStart">—</b></div>
+              <div class="wide"><small>NOW AT</small><b id="dNow">—</b></div>
+              <div><small>START TIME</small><b id="dStartTime">—</b></div><div><small>HEADING</small><b id="dHead">—</b></div>
+              <div><small>ALTITUDE</small><b id="dAlt">—</b></div><div><small>GPS ACCURACY</small><b id="dAcc">—</b></div>
+            </div>
+            <div class="guide-set"><label>RIDING STYLE<select id="profileSel"><option value="calm">Calm</option><option value="normal" selected>Normal</option><option value="sport">Sport</option></select></label><label class="chk"><input type="checkbox" id="voiceChk" checked> VOICE ALERTS</label></div>
+            <div class="ride-actions">
+              <button class="primary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
+              <button class="end-btn wide" id="endBtn" disabled>END RIDE</button>
+            </div>
+            <p class="privacy-note">Location is used only while this ride session is active. Keep your phone securely mounted and never interact with the screen while moving.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="race" id="raceSection">
+        <div class="section-heading"><div><p class="eyebrow">RACE MODE</p><h2>Set the line. Count the laps.</h2></div><span class="section-note">CLOSED CIRCUITS &amp; TRACK DAYS ONLY</span></div>
+        <div class="race-grid">
+          <div class="race-map"><div id="raceMap"></div></div>
+          <div class="race-panel">
+            <div class="race-modes"><button class="chip on" data-mode="circuit">CIRCUIT · LAPS</button><button class="chip" data-mode="p2p">POINT TO POINT</button></div>
+            <div class="race-pts">
+              <div><small>START / FINISH LINE</small><b id="ptA">Not set</b><button class="secondary-btn" id="setA">USE MY LOCATION</button></div>
+              <div id="rowB" hidden><small>FINISH POINT</small><b id="ptB">Not set</b><button class="secondary-btn" id="setB">USE MY LOCATION</button></div>
+              <p class="legal">Or tap the map to place the point. Lines are 30 m gates; laps are timed by GPS (about ±1 s).</p>
+            </div>
+            <div class="race-live"><div class="wide"><small>TOTAL TIME</small><b id="rTime">0:00.0</b></div><div><small>CURRENT LAP</small><b id="rLap">—</b></div><div><small>LAPS</small><b id="rLaps">0</b></div><div><small>DISTANCE km</small><b id="rDist">0.00</b></div><div><small>SPEED km/h</small><b id="rSpeed">0</b></div></div>
+            <button class="primary-btn" id="raceGo">START RACE</button><p class="legal" id="raceMsg">Set your start point, then press start.</p>
+            <ol class="laps" id="lapList"></ol><div id="raceHistory"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="copilot-promo" id="copilotSection">
+        <div><p class="eyebrow">LIVE CO-PILOT</p><h2>Your phone sees the corner first.</h2>
+          <p>Mount your phone, open the co-pilot and ride your planned route. It warns you before every bend, shows the speed to aim for, and tracks your lean angle live.</p>
+          <ul><li>Corner warning with distance and target speed</li><li>Lean angle (left / right) with max values</li><li>What lean the next corner would need at your speed</li><li>Voice alerts, vibration, screen stays awake</li></ul>
+          <button class="primary-btn" id="openCopilot">OPEN CO-PILOT</button>
+          <p class="legal">Lean angle is an estimate from GPS heading and speed, not a calibrated sensor. Set up before you ride and never operate the phone while moving.</p></div>
+      </section>
+
+      <section class="guidance-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">ROAD AWARENESS</p><h2>Read the road like a racing game.</h2></div>
+          <span class="section-note">ASSISTIVE GUIDANCE</span>
+        </div>
+        <div class="guidance-grid legend">
+          <article class="guidance-card"><i class="dot" style="--c:#4fd18b"></i><div><h3>Green · Speed OK</h3><p>Your speed fits the road ahead. Stay smooth and keep your line.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e7d25b"></i><div><h3>Yellow · Ease off</h3><p>You are a little fast for what is coming. Roll off the throttle.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e58b52"></i><div><h3>Orange · Slow down</h3><p>Too fast for the next section. Voice and vibration alert you.</p></div></article>
+          <article class="guidance-card"><i class="dot" style="--c:#e5554f"></i><div><h3>Red · Corner ahead</h3><p>A sharp bend is coming. Bring your speed right down before you reach it.</p></div></article>
+        </div>
+        <p class="legal">Guidance is advisory and based on route geometry only. It cannot see surface, weather, traffic or legal limits. Always ride to the conditions and obey local law.</p>
+      </section>
+
+      <section class="world">
+        <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
+        <div class="world-grid">
+          <figure class="tall"><img src="assets/hoodie.webp" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
+          <figure><img src="assets/car1.webp" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
+          <figure><img src="assets/car2.webp" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
+        </div>
+      </section>
+
+      <section class="cta"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Start your first lap.</h2><p>Allow location, tap start, and let Slay Moto handle the rest.</p></div><button class="primary-btn" id="ctaStart"><span class="play">▶</span> START RIDE</button></section>
+
+      <section class="history-section">
+        <div class="section-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h2>Recent rides.</h2></div><button class="text-btn" id="clearHistoryBtn">CLEAR HISTORY</button></div>
+        <div id="historyList" class="history-list"><div class="empty-state">Your completed rides will appear here.</div></div>
+      </section>
+    </main>
+
+    <footer><span>SLAY MOTO</span><span>RIDE RESPONSIBLY · STAY PRESENT</span><span>© 2026</span></footer>
+  </div>
+
+  <div class="copilot" id="copilot" hidden>
+    <div class="cp-top"><button class="cp-close" id="cpCal">⊙ CALIBRATE UPRIGHT</button><button class="cp-close" id="cpClose">✕ EXIT</button></div>
+    <div class="cp-msg" id="cpMsg">WAITING FOR GPS…</div>
+    <div class="cp-speed"><b id="cpSpeed">0</b><small>km/h</small><span>TARGET <b id="cpTarget">--</b></span></div>
+    <div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div>
+    <div class="cp-lean"><div class="cp-bike" id="cpBike"></div><b id="cpLean">0°</b><small id="cpSide">UPRIGHT</small><em id="cpMax">MAX L 0° · MAX R 0°</em><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, TAP THE BUTTON</small></div>
+  </div>
+
+  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RIDE</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
+
+  <div class="modal-backdrop" id="routeModal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+      <p class="eyebrow">ROUTE PLANNER</p><h2>Where to?</h2>
+      <p class="modal-copy">Enter a destination to draw a suggested route. Route planning requires an internet connection and is provided as a convenience, not as certified motorcycle navigation.</p>
+      <label for="destination">DESTINATION</label>
+      <input id="destination" type="text" placeholder="e.g. Brandenburg Gate, Berlin">
+      <div class="modal-actions"><button class="secondary-btn" id="cancelPlan">CANCEL</button><button class="primary-btn" id="findRoute">FIND ROUTE</button><button class="primary-btn" id="startRouteBtn" hidden>START RIDE NOW</button></div>
+      <p id="routeMessage" class="form-message" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="guidance.js"></script>
+  <script src="app.js"></script>
+  <script src="pro.js"></script>
+</body>
+</html>
