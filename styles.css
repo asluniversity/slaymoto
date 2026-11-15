@@ -56,7 +56,7 @@ body{background:radial-gradient(900px 500px at 85% -5%,rgba(56,189,248,.16),tran
 /* ---- v4 brand + sections ---- */
 .logo{height:46px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(56,189,248,.35))}
 .brand{gap:12px}.brand-copy strong{letter-spacing:.34em}
-.hero-visual{background:url(assets/hero.jpg) center/cover no-repeat!important}
+.hero-visual{background:url(assets/hero.webp) center/cover no-repeat!important}
 .visual-overlay{background:linear-gradient(0deg,rgba(5,8,13,.85),transparent 55%),linear-gradient(90deg,rgba(5,8,13,.35),transparent 60%)!important}
 .hero h1{font-weight:700;font-style:italic;letter-spacing:-.05em;text-transform:uppercase;font-size:clamp(40px,5.4vw,74px)}
 .strip{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:16px 0;margin:0 0 70px;border-block:1px solid var(--line);font-size:10px;letter-spacing:.26em;color:var(--tiffany2);font-weight:700}
@@ -74,7 +74,7 @@ body{background:radial-gradient(900px 500px at 85% -5%,rgba(56,189,248,.16),tran
 .world-grid figure{margin:0;position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line)}.world-grid .tall{grid-row:span 2}
 .world-grid figcaption{position:absolute;inset:auto 0 0 0;padding:60px 22px 20px;background:linear-gradient(0deg,rgba(5,8,13,.92),transparent)}
 .world-grid figcaption span{font-size:9px;letter-spacing:.22em;color:var(--tiffany)}.world-grid figcaption b{display:block;font-size:20px;margin:6px 0;letter-spacing:-.02em}.world-grid figcaption p{margin:0;color:#b9c8d6;font-size:12px;line-height:1.6}
-.cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:44px;margin-bottom:80px;border-radius:26px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(5,8,13,.92),rgba(5,8,13,.55)),url(assets/car2.jpg) center/cover}
+.cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:44px;margin-bottom:80px;border-radius:26px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(5,8,13,.92),rgba(5,8,13,.55)),url(assets/car2.webp) center/cover}
 .cta p{color:#b9c8d6;margin:0}
 @media(max-width:850px){.how{grid-template-columns:1fr}.world-grid{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:240px}.world-grid .tall{grid-row:auto;height:360px}.logo{height:38px}.cta{padding:28px}}
 
@@ -88,7 +88,7 @@ body{background:radial-gradient(900px 500px at 85% -5%,rgba(56,189,248,.16),tran
 .race-live{display:grid;grid-template-columns:1fr 1fr;gap:8px}.race-live div{background:rgba(56,189,248,.06);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.race-live .wide{grid-column:1/-1}.race-live b{font-size:22px;font-variant-numeric:tabular-nums}.race-live .wide b{font-size:38px;color:var(--tiffany2)}
 .laps{list-style:none;margin:0;padding:0;display:grid;gap:6px}.laps li{display:flex;justify-content:space-between;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:12px}.laps li.best{background:rgba(79,209,139,.14);color:#4fd18b}
 .rh{display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:8px 0;border-top:1px solid var(--line);color:var(--muted)}.rh b{color:var(--text)}
-.copilot-promo{margin:0 0 90px;padding:36px;border-radius:26px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(5,8,13,.94),rgba(5,8,13,.6)),url(assets/hero.jpg) center/cover}.copilot-promo>div{max-width:560px}.copilot-promo h2{font-size:clamp(28px,3.4vw,44px);letter-spacing:-.04em;margin:0 0 14px}.copilot-promo p{color:#b9c8d6;line-height:1.7}.copilot-promo ul{color:#d7e4ef;font-size:13px;line-height:2;padding-left:18px;margin:0 0 22px}
+.copilot-promo{margin:0 0 90px;padding:36px;border-radius:26px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(5,8,13,.94),rgba(5,8,13,.6)),url(assets/hero.webp) center/cover}.copilot-promo>div{max-width:560px}.copilot-promo h2{font-size:clamp(28px,3.4vw,44px);letter-spacing:-.04em;margin:0 0 14px}.copilot-promo p{color:#b9c8d6;line-height:1.7}.copilot-promo ul{color:#d7e4ef;font-size:13px;line-height:2;padding-left:18px;margin:0 0 22px}
 .copilot{position:fixed;inset:0;z-index:2000;background:#000;color:#fff;display:grid;grid-template-rows:auto auto 1fr auto auto;gap:10px;padding:max(14px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));--c:#4fd18b;border:6px solid var(--c);text-align:center}
 .copilot[hidden]{display:none}.cp-close{justify-self:end;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 12px;font-size:11px}
 .cp-msg{font-size:clamp(22px,6vw,34px);font-weight:900;letter-spacing:.06em;color:var(--c)}
@@ -96,3 +96,5 @@ body{background:radial-gradient(900px 500px at 85% -5%,rgba(56,189,248,.16),tran
 .cp-corner{font-size:16px;line-height:1.6;min-height:52px}.cp-corner b{color:var(--c)}.cp-corner .bad{color:#e5554f}
 .cp-lean{display:grid;justify-items:center;gap:4px;padding-top:8px;border-top:1px solid var(--line)}.cp-bike{width:150px;height:10px;border-radius:6px;background:linear-gradient(90deg,#38bdf8,#e5554f);transition:transform .25s}.cp-lean>b{font-size:46px}.cp-lean small{font-size:11px;letter-spacing:.2em;color:var(--tiffany2)}.cp-lean em{font-style:normal;font-size:11px;color:var(--muted)}
 @media(max-width:850px){.race-grid{grid-template-columns:1fr}.race-map,#raceMap{min-height:340px}.nav{display:none}.copilot-promo{padding:24px}}
+
+.cp-top{display:flex;justify-content:space-between;gap:10px}.cp-lean small#cpSrc{font-size:9px;color:var(--muted);letter-spacing:.12em}
