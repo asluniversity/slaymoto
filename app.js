@@ -172,7 +172,7 @@ function rideImage(r){
   st.forEach(([l,v],i)=>{const x=70+i*250;g.fillStyle='#8aa0b4';g.font='22px sans-serif';g.fillText(l,x,1150);g.fillStyle='#eef7f6';g.font='700 38px sans-serif';g.fillText(v,x,1200);});
   return c;
 }
-function showRideImage(r){if(!r)return;const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('imgModal').hidden=false;}
+function showRideImage(r){if(!r)return;const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('dlImg').download='slay-moto-ride.png';$('imgModal').hidden=false;}
 $('closeImg').addEventListener('click',()=>$('imgModal').hidden=true);
 $('historyList').addEventListener('click',e=>{const a=e.target.closest('.history-item');if(a)showRideImage(JSON.parse(localStorage.getItem('slayMotoRides')||'[]')[a.dataset.i]);});
 $('profileSel').addEventListener('change',e=>Guide.setProfile(e.target.value));
