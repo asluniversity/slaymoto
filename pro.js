@@ -77,7 +77,7 @@ function raceImage(r){
 function showRace(r){if(!r)return;const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-race.png';q('imgModal').hidden=false;}
 q('raceGo').onclick=()=>R.run?finish():start();hist();
 /* ---------- CO-PILOT ---------- */
-const C={g:'#4fd18b',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
+const C={g:'#7dd3fc',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
 const P={open:false,wid:null,prev:null,hp:null,w:0,lean:0,mL:0,mR:0};
 const IOS=/iP(hone|ad|od)/.test(navigator.userAgent),S={up:null,up0:null,ok:false,t:0,yaw:0,vote:0,sg:1,mag:0,last:0};
 const nrm=v=>{const m=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/m,v[1]/m,v[2]/m];};
