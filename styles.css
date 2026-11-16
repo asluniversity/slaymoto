@@ -137,3 +137,12 @@ body{padding-bottom:84px}
 /* ---- v10b centered cockpit on wide screens ---- */
 .copilot>*{width:100%;max-width:640px;margin-inline:auto}.cp-turn{margin-top:16px}
 @media(min-width:850px){.copilot{padding-block:22px}.cp-top{max-width:900px}.copilot>.cp-top{max-width:900px}}
+
+/* ---- v11 co-pilot: neon blue outline, black & white instruments ---- */
+.copilot{background:radial-gradient(600px 380px at 50% 32%,rgba(255,255,255,.06),transparent 70%),#000}
+.copilot::after{border:2px solid #38bdf8;border-radius:0;box-shadow:inset 0 0 0 1px rgba(125,211,252,.55),inset 0 0 38px rgba(56,189,248,.55),inset 0 0 90px -20px rgba(56,189,248,.5)}
+.cp-speed b{color:#fff;text-shadow:0 0 28px rgba(255,255,255,.18)}.cp-speed small,.cp-tgt small{color:#9aa7b2}.cp-tgt b{color:#fff}
+.cp-mid b{color:#fff}.cp-mid small{color:#fff;opacity:.85}.cp-mid em{color:#d5dbe0}
+.cp-turn .t.on{color:#fff;text-shadow:0 0 16px #38bdf8,0 0 34px #38bdf8}.cp-turn .t.hot{color:#fff;text-shadow:0 0 16px #e5554f,0 0 34px #e5554f}
+.cp-logo{filter:drop-shadow(0 0 8px rgba(56,189,248,.7))}.cp-close{border-color:rgba(56,189,248,.45)}.cp-card{border-color:rgba(56,189,248,.4);background:rgba(0,0,0,.75)}
+.cp-preview{border:1px solid #38bdf8;box-shadow:0 0 26px rgba(56,189,248,.4),inset 0 0 26px rgba(56,189,248,.12);background:#000}
