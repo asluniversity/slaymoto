@@ -122,10 +122,11 @@
 
       <section class="copilot-promo" id="copilotSection">
         <div><p class="eyebrow">LIVE CO-PILOT</p><h2>Your phone sees the corner first.</h2>
-          <p>Mount your phone, open the co-pilot and ride your planned route. It warns you before every bend, shows the speed to aim for, and tracks your lean angle live.</p>
-          <ul><li>Corner warning with distance and target speed</li><li>Lean angle (left / right) with max values</li><li>What lean the next corner would need at your speed</li><li>Voice alerts, vibration, screen stays awake</li></ul>
+          <p>Mount your phone, calibrate once and ride your planned route. The co-pilot reads the road ahead, warns you before every bend and tracks your lean angle in real time.</p>
+          <ul class="cp-feats"><li><b>CORNER WARNING</b>Distance and target speed before every bend.</li><li><b>LEAN ANGLE</b>Live left / right angle from your phone's sensors, with max markers.</li><li><b>LEAN PREVIEW</b>The lean the next corner would need at your speed.</li><li><b>ALERTS</b>Voice, vibration and a screen that stays awake.</li></ul>
           <button class="primary-btn" id="openCopilot">OPEN CO-PILOT</button>
-          <p class="legal">Lean angle is an estimate from GPS heading and speed, not a calibrated sensor. Set up before you ride and never operate the phone while moving.</p></div>
+          <p class="legal">Lean angle comes from your phone's motion sensors (GPS as backup) and is an estimate. Set up before you ride and never operate the phone while moving.</p></div>
+        <div class="cp-preview"><img src="assets/logo.webp" alt="SLAY"><div class="cp-gauge" id="pgGauge"></div><small>PREVIEW · 28° RIGHT · 0.53 g</small></div>
       </section>
 
       <section class="guidance-section">
@@ -163,11 +164,12 @@
   </div>
 
   <div class="copilot" id="copilot" hidden>
-    <div class="cp-top"><button class="cp-close" id="cpCal">⊙ CALIBRATE UPRIGHT</button><button class="cp-close" id="cpClose">✕ EXIT</button></div>
+    <div class="cp-top"><img class="cp-logo" src="assets/logo.webp" alt="SLAY"><div class="cp-btns"><button class="cp-close" id="cpCal">⊙ CALIBRATE</button><button class="cp-close" id="cpClose">✕ EXIT</button></div></div>
     <div class="cp-msg" id="cpMsg">WAITING FOR GPS…</div>
-    <div class="cp-speed"><b id="cpSpeed">0</b><small>km/h</small><span>TARGET <b id="cpTarget">--</b></span></div>
-    <div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div>
-    <div class="cp-lean"><div class="cp-bike" id="cpBike"></div><b id="cpLean">0°</b><small id="cpSide">UPRIGHT</small><em id="cpMax">MAX L 0° · MAX R 0°</em><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, TAP THE BUTTON</small></div>
+    <div class="cp-speedrow"><div class="cp-speed"><b id="cpSpeed">0</b><small>KM/H</small></div><div class="cp-tgt"><small>TARGET</small><b id="cpTarget">--</b><div class="cp-bar"><i id="cpBar"></i><u id="cpTick"></u></div></div></div>
+    <div class="cp-gauge" id="cpGauge"></div>
+    <div class="cp-read"><b id="cpLean">0°</b><div><small id="cpSide">UPRIGHT</small><em id="cpG">0.00 g</em><span id="cpMax">MAX L 0° · MAX R 0°</span></div></div>
+    <div class="cp-card"><div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div><div class="cp-approach"><i id="cpDist"></i></div><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE</small></div>
   </div>
 
   <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RIDE</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
