@@ -166,7 +166,7 @@ function rideImage(r){
     [[24,'rgba(56,189,248,.16)'],[8,'#38bdf8']].forEach(([lw,col])=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(X(p),Y(p)):g.moveTo(X(p),Y(p)));g.lineWidth=lw;g.strokeStyle=col;g.stroke();});
     [[pts[0],'#4fd18b'],[pts[pts.length-1],'#e5554f']].forEach(([p,col])=>{g.beginPath();g.arc(X(p),Y(p),14,0,7);g.fillStyle=col;g.fill();g.lineWidth=4;g.strokeStyle='#05080d';g.stroke();});
   }
-  g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO',70,100);
+  g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO',70,100);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-70-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='26px sans-serif';g.fillText(new Date(r.date).toLocaleString(),70,145);g.fillStyle='#eef7f6';g.font='24px sans-serif';g.fillText('FROM  '+(r.startPlace||'—').slice(0,55),70,1270);g.fillText('TO      '+(r.endPlace||'—').slice(0,55),70,1310);
   const st=[['DISTANCE',(r.distance/1000).toFixed(2)+' km'],['TIME',formatTime(r.elapsed)],['AVG',Math.round(r.avg||0)+' km/h'],['MAX',Math.round(r.max||0)+' km/h']];
   st.forEach(([l,v],i)=>{const x=70+i*250;g.fillStyle='#8aa0b4';g.font='22px sans-serif';g.fillText(l,x,1150);g.fillStyle='#eef7f6';g.font='700 38px sans-serif';g.fillText(v,x,1200);});
@@ -192,3 +192,5 @@ function showDetails(p){
 $('startRouteBtn').addEventListener('click',()=>{$('routeModal').hidden=true;startRide();});
 
 $('ctaStart').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});$('startBtn').click();});
+
+const LOGO=new Image();LOGO.src='assets/logo.webp';
