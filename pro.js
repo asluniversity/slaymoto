@@ -54,7 +54,7 @@ function hist(){const l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');
 q('raceHistory').onclick=e=>{const d=e.target.closest('.rh');if(d)showRace(JSON.parse(localStorage.getItem('slayMotoRaces')||'[]')[d.dataset.i]);};
 function raceImage(r){
   const W=1080,H=1640,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
-  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO · RACE RECORD',60,90);
+  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO · RACE RECORD',60,90);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-60-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='24px sans-serif';g.fillText(new Date(r.date).toLocaleString()+'  ·  '+(r.mode==='circuit'?'CIRCUIT':'POINT TO POINT'),60,130);
   const vs=p.map(x=>x[2]),mn=Math.min(...vs),mx=Math.max(...vs)||1,col=v=>`hsl(${200-200*((v-mn)/((mx-mn)||1))},90%,55%)`;
   if(p.length>1){
@@ -81,8 +81,20 @@ const C={g:'#4fd18b',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
 const P={open:false,wid:null,prev:null,hp:null,w:0,lean:0,mL:0,mR:0};
 const IOS=/iP(hone|ad|od)/.test(navigator.userAgent),S={up:null,up0:null,ok:false,t:0,yaw:0,vote:0,sg:1,mag:0,last:0};
 const nrm=v=>{const m=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/m,v[1]/m,v[2]/m];};
+function gauge(p){const cx=150,cy=160,r=118,pt=(a,rr)=>[cx+rr*Math.sin(a*D),cy-rr*Math.cos(a*D)],f=n=>n.toFixed(1);
+  const arc=(a,b,col)=>{const A=pt(a,r),B=pt(b,r);return `<path d="M${f(A[0])} ${f(A[1])}A${r} ${r} 0 0 1 ${f(B[0])} ${f(B[1])}" stroke="${col}" stroke-width="10" fill="none"/>`;};
+  let s='<svg viewBox="0 0 300 190" role="img" aria-label="Lean angle gauge">'+arc(-60,-45,'#e5554f')+arc(-45,-30,'#e7d25b')+arc(-30,30,'#38bdf8')+arc(30,45,'#e7d25b')+arc(45,60,'#e5554f');
+  for(let a=-60;a<=60;a+=5){const m=a%10===0,A=pt(a,r-9),B=pt(a,r-9-(m?14:7));s+=`<line x1="${f(A[0])}" y1="${f(A[1])}" x2="${f(B[0])}" y2="${f(B[1])}" stroke="${m?'#cfe3f2':'#5c7487'}" stroke-width="${m?2:1}"/>`;}
+  for(let a=-60;a<=60;a+=20){const T=pt(a,r-38);s+=`<text x="${f(T[0])}" y="${f(T[1]+4)}" fill="#8aa0b4" font-size="11" text-anchor="middle" font-family="sans-serif">${Math.abs(a)}</text>`;}
+  const mk=k=>`<g id="${p}${k}" transform="rotate(0 150 160)" style="opacity:0"><path d="M150 38L144 26h12z" fill="#e7d25b"/></g>`;
+  return s+mk('MaxL')+mk('MaxR')+`<g id="${p}Needle" transform="rotate(0 150 160)"><path d="M146.5 160L150 48l3.5 112z" fill="#7dd3fc"/></g><circle cx="150" cy="160" r="10" fill="#05080d" stroke="#38bdf8" stroke-width="3"/><text x="40" y="184" fill="#8aa0b4" font-size="10" font-family="sans-serif" text-anchor="middle">LEFT</text><text x="260" y="184" fill="#8aa0b4" font-size="10" font-family="sans-serif" text-anchor="middle">RIGHT</text></svg>`;}
+q('cpGauge').innerHTML=gauge('cp');q('pgGauge').innerHTML=gauge('pg');
+q('pgNeedle').setAttribute('transform','rotate(28 150 160)');[['pgMaxR',34],['pgMaxL',-21]].forEach(([k,v])=>{q(k).setAttribute('transform',`rotate(${v} 150 160)`);q(k).style.opacity=1;});
+const clp=v=>Math.max(-60,Math.min(60,v));
 function show(l,src){const a=Math.round(Math.abs(l));q('cpLean').textContent=a+'°';q('cpSide').textContent=a<3?'UPRIGHT':(l>0?'RIGHT':'LEFT');
-  q('cpBike').style.transform=`rotate(${Math.max(-60,Math.min(60,l))}deg)`;P.mR=Math.max(P.mR,l);P.mL=Math.max(P.mL,-l);
+  q('cpG').textContent=Math.tan(Math.abs(l)*D).toFixed(2)+' g';q('cpNeedle').setAttribute('transform',`rotate(${clp(l)} 150 160)`);
+  P.mR=Math.max(P.mR,l);P.mL=Math.max(P.mL,-l);
+  [['cpMaxR',P.mR],['cpMaxL',-P.mL]].forEach(([k,v])=>{q(k).setAttribute('transform',`rotate(${clp(v)} 150 160)`);q(k).style.opacity=Math.abs(v)>3?1:0;});
   q('cpMax').textContent=`MAX L ${Math.round(P.mL)}° · MAX R ${Math.round(P.mR)}°`;q('cpSrc').textContent=src;}
 function onMotion(e){const a=e.accelerationIncludingGravity,r=e.rotationRate;if(!a||a.x==null)return;
   const s=IOS?-1:1,ac=[a.x*s,a.y*s,a.z*s],t=performance.now();
@@ -112,12 +124,12 @@ function onC(pos){const c=pos.coords;if(c.accuracy>50)return;const t=pos.timesta
   if(!S.ok)show(P.lean,'GPS ESTIMATE');
   if(Guide.hasRoute())Guide.update({lat:c.latitude,lng:c.longitude},spd);else{q('cpMsg').textContent='NO ROUTE · SPEED & LEAN ONLY';q('cpCorner').textContent='Plan a route to get corner warnings.';}}
 Guide.onInfo(i=>{if(!P.open)return;q('copilot').style.setProperty('--c',C[i.l]);q('cpMsg').textContent=i.msg;
-  if(i.off){q('cpCorner').textContent='Return to the planned route for corner warnings.';return;}
-  q('cpTarget').textContent=Math.round(i.allowed/5)*5;
+  if(i.off){q('cpCorner').innerHTML='<span class="cc-h">OFF ROUTE</span><span class="cc-s">Return to the planned route for corner warnings.</span>';return;}
+  const tg=Math.round(i.allowed/5)*5,sc=Math.max(tg*1.4,1);q('cpTarget').textContent=tg;q('cpBar').style.width=Math.min(100,i.spd/sc*100)+'%';q('cpTick').style.left=tg/sc*100+'%';
   if(i.cd!=null){const f=v=>Math.round(Math.atan((v/3.6)**2/(i.cr*G))/D),n=f(i.spd),tl=f(i.ct);
-    q('cpCorner').innerHTML=`CORNER IN <b>${i.cd} m</b> — slow to <b>${Math.round(i.ct/5)*5}</b> km/h<br>At your speed: <b class="${n>40?'bad':''}">~${n}° lean</b> · at target: <b>~${tl}°</b>`;}
-  else q('cpCorner').textContent='ROAD AHEAD CLEAR';});
-q('openCopilot').onclick=()=>{startSensors();P.open=true;P.mL=P.mR=0;P.prev=P.hp=null;Guide.reset();q('copilot').hidden=false;
+    q('cpCorner').innerHTML=`<span class="cc-h">CORNER IN <b>${i.cd} m</b></span><span class="cc-s">Slow to <b>${Math.round(i.ct/5)*5}</b> km/h</span><span class="cc-r">At your speed <b class="${n>40?'bad':''}">~${n}° lean</b> · at target <b>~${tl}°</b></span>`;q('cpDist').style.width=Math.max(0,100-i.cd/480*100)+'%';}
+  else{q('cpCorner').innerHTML='<span class="cc-h">ROAD AHEAD CLEAR</span>';q('cpDist').style.width='0%';}});
+q('openCopilot').onclick=()=>{startSensors();P.open=true;P.mL=P.mR=0;P.prev=P.hp=null;Guide.reset();q('copilot').hidden=false;show(0,'CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE');
   q('cpMsg').textContent='WAITING FOR GPS…';lockScreen();try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}catch(e){}
   P.wid=navigator.geolocation.watchPosition(onC,e=>q('cpMsg').textContent='GPS: '+e.message,{enableHighAccuracy:true,maximumAge:0,timeout:20000});};
 q('cpClose').onclick=()=>{stopSensors();P.open=false;navigator.geolocation.clearWatch(P.wid);q('copilot').hidden=true;releaseLock();try{document.fullscreenElement&&document.exitFullscreen();}catch(e){}};
