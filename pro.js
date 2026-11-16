@@ -83,11 +83,11 @@ const IOS=/iP(hone|ad|od)/.test(navigator.userAgent),S={up:null,up0:null,ok:fals
 const nrm=v=>{const m=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/m,v[1]/m,v[2]/m];};
 function gauge(p){const cx=150,cy=160,r=118,pt=(a,rr)=>[cx+rr*Math.sin(a*D),cy-rr*Math.cos(a*D)],f=n=>n.toFixed(1);
   const arc=(a,b,col)=>{const A=pt(a,r),B=pt(b,r);return `<path d="M${f(A[0])} ${f(A[1])}A${r} ${r} 0 0 1 ${f(B[0])} ${f(B[1])}" stroke="${col}" stroke-width="12" fill="none"/>`;};
-  let s='<svg viewBox="34 22 232 158" role="img" aria-label="Lean angle gauge">'+arc(-60,-45,'#e5554f')+arc(-45,-30,'#e7d25b')+arc(-30,30,'#38bdf8')+arc(30,45,'#e7d25b')+arc(45,60,'#e5554f');
-  for(let a=-60;a<=60;a+=5){const m=a%10===0,A=pt(a,r-9),B=pt(a,r-9-(m?14:7));s+=`<line x1="${f(A[0])}" y1="${f(A[1])}" x2="${f(B[0])}" y2="${f(B[1])}" stroke="${m?'#cfe3f2':'#5c7487'}" stroke-width="${m?2:1}"/>`;}
-  for(let a=-60;a<=60;a+=20){const T=pt(a,r-40);s+=`<text x="${f(T[0])}" y="${f(T[1]+4)}" fill="#8aa0b4" font-size="14" text-anchor="middle" font-family="sans-serif">${Math.abs(a)}</text>`;}
-  const mk=k=>`<g id="${p}${k}" transform="rotate(0 150 160)" style="opacity:0"><path d="M150 38L144 26h12z" fill="#e7d25b"/></g>`;
-  return s+mk('MaxL')+mk('MaxR')+`<g id="${p}Needle" transform="rotate(0 150 160)"><path d="M145 160L150 46l5 114z" fill="#7dd3fc"/></g><circle cx="150" cy="160" r="12" fill="#05080d" stroke="#38bdf8" stroke-width="4"/></svg>`;}
+  let s='<svg viewBox="34 22 232 158" role="img" aria-label="Lean angle gauge">'+arc(-60,-45,'#4b555e')+arc(-45,-30,'#a3adb5')+arc(-30,30,'#ffffff')+arc(30,45,'#a3adb5')+arc(45,60,'#4b555e');
+  for(let a=-60;a<=60;a+=5){const m=a%10===0,A=pt(a,r-9),B=pt(a,r-9-(m?14:7));s+=`<line x1="${f(A[0])}" y1="${f(A[1])}" x2="${f(B[0])}" y2="${f(B[1])}" stroke="${m?'#ffffff':'#6b7782'}" stroke-width="${m?2:1}"/>`;}
+  for(let a=-60;a<=60;a+=20){const T=pt(a,r-40);s+=`<text x="${f(T[0])}" y="${f(T[1]+4)}" fill="#d5dbe0" font-size="14" text-anchor="middle" font-family="sans-serif">${Math.abs(a)}</text>`;}
+  const mk=k=>`<g id="${p}${k}" transform="rotate(0 150 160)" style="opacity:0"><path d="M150 38L144 26h12z" fill="#ffffff"/></g>`;
+  return s+mk('MaxL')+mk('MaxR')+`<g id="${p}Needle" transform="rotate(0 150 160)" style="filter:drop-shadow(0 0 5px rgba(255,255,255,.75))"><path d="M145 160L150 46l5 114z" fill="#ffffff"/></g><circle cx="150" cy="160" r="12" fill="#000" stroke="#ffffff" stroke-width="4"/></svg>`;}
 q('cpGauge').innerHTML=gauge('cp');q('pgGauge').innerHTML=gauge('pg');
 q('pgNeedle').setAttribute('transform','rotate(28 150 160)');[['pgMaxR',34],['pgMaxL',-21]].forEach(([k,v])=>{q(k).setAttribute('transform',`rotate(${v} 150 160)`);q(k).style.opacity=1;});
 const clp=v=>Math.max(-60,Math.min(60,v));
