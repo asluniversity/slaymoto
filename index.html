@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#05080d">
+  <meta name="color-scheme" content="dark">
   <meta name="description" content="SLAY MOTO — a refined ride tracking and navigation companion for motorcyclists.">
   <title>SLAY MOTO — Ride with clarity</title>
   <link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
@@ -11,17 +12,17 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Slay Moto home">
-        <img class="logo" fetchpriority="high" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
+        <img class="logo" fetchpriority="high" width="42" height="38" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
       </a>
       <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#copilotSection">CO-PILOT</a></nav>
       <div class="top-actions">
-        <span class="gps-status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
+        <span class="gps-status" title="GPS status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
         <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
         <button class="avatar" aria-label="Profile">R</button>
       </div>
@@ -35,12 +36,13 @@
           <h1>Race the road.<br><em>Own every corner.</em></h1>
           <p class="hero-sub">Slay Moto turns your phone into a racing co-pilot. Start from your exact location, see every bend colored ahead of you, and get live cues before the corner arrives — then relive the lap as a shareable route image.</p>
           <div class="hero-actions">
-            <button class="primary-btn" id="startBtn"><span class="play">▶</span> START RIDE</button>
+            <a class="primary-btn" href="#rideSection">OPEN RIDE CONSOLE <span>↓</span></a>
             <button class="secondary-btn" id="planBtn">PLAN A ROUTE <span>↗</span></button>
           </div>
           <div class="hero-footnote"><span class="pulse"></span> RACING. FASTER. FOREVER.</div>
         </div>
-        <div class="hero-visual" role="img" aria-label="SLAY rider leaning into a corner on a race track">
+        <div class="hero-visual">
+          <img class="hero-img" src="assets/hero.webp" width="737" height="491" alt="SLAY rider leaning into a corner on a race track" fetchpriority="high" decoding="async">
           <div class="visual-overlay"></div>
           <div class="visual-caption"><span>01 / THE LINE</span><b>Find your line.</b></div>
         </div>
@@ -49,7 +51,7 @@
       <div class="strip"><span>LIVE GPS</span><i></i><span>RIDE TIMER</span><i></i><span>ROUTE MAP</span><i></i><span>CORNER ALERTS</span><i></i><span>LAP IMAGE</span></div>
 
       <section class="how">
-        <div class="how-img"><img src="assets/paddock.webp" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy" decoding="async"><span>PADDOCK · READY</span></div>
+        <div class="how-img"><img src="assets/paddock.webp" width="737" height="492" alt="Rider in SLAY race leathers crouching beside a black superbike" loading="lazy" decoding="async"><span>PADDOCK · READY</span></div>
         <div class="how-copy"><p class="eyebrow">HOW IT WORKS</p><h2>From the pit to the apex.</h2>
           <ol class="steps">
             <li><b>01</b><div><h3>Lock your position</h3><p>Slay Moto finds your exact GPS location, names your start point and starts the clock the moment you go.</p></div></li>
@@ -94,7 +96,8 @@
             </div>
             <div class="guide-set"><label>RIDING STYLE<select id="profileSel"><option value="calm">Calm</option><option value="normal" selected>Normal</option><option value="sport">Sport</option></select></label><label class="chk"><input type="checkbox" id="voiceChk" checked> VOICE ALERTS</label></div>
             <div class="ride-actions">
-              <button class="primary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
+              <button class="primary-btn wide start-ride" id="startBtn"><span class="play">▶</span> START RIDE</button>
+              <button class="secondary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
               <button class="end-btn wide" id="endBtn" disabled>END RIDE</button>
             </div>
             <p class="privacy-note">Location is used only while this ride session is active. Keep your phone securely mounted and never interact with the screen while moving.</p>
@@ -126,7 +129,7 @@
           <ul class="cp-feats"><li><b>CORNER WARNING</b>Distance and target speed before every bend.</li><li><b>LEAN ANGLE</b>Live left / right angle from your phone's sensors, with max markers.</li><li><b>LEAN PREVIEW</b>The lean the next corner would need at your speed.</li><li><b>ALERTS</b>Voice, vibration and a screen that stays awake.</li></ul>
           <button class="primary-btn" id="openCopilot">OPEN CO-PILOT</button>
           <p class="legal">Lean angle comes from your phone's motion sensors (GPS as backup) and is an estimate. Set up before you ride and never operate the phone while moving.</p></div>
-        <div class="cp-preview"><img src="assets/logo.webp" alt="SLAY"><div class="cp-gauge" id="pgGauge"></div><small>PREVIEW · 28° RIGHT · 0.53 g</small></div>
+        <div class="cp-preview"><img src="assets/logo.webp" width="22" height="20" alt="SLAY"><div class="cp-gauge" id="pgGauge"></div><small>PREVIEW · 28° RIGHT · 0.53 g</small></div>
       </section>
 
       <section class="guidance-section">
@@ -146,13 +149,13 @@
       <section class="world">
         <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
         <div class="world-grid">
-          <figure class="tall"><img src="assets/hoodie.webp" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
-          <figure><img src="assets/car1.webp" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
-          <figure><img src="assets/car2.webp" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
+          <figure class="tall"><img src="assets/hoodie.webp" width="699" height="441" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
+          <figure><img src="assets/car1.webp" width="1200" height="607" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
+          <figure><img src="assets/car2.webp" width="1200" height="381" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
         </div>
       </section>
 
-      <section class="cta"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Start your first lap.</h2><p>Allow location, tap start, and let Slay Moto handle the rest.</p></div><button class="primary-btn" id="ctaStart"><span class="play">▶</span> START RIDE</button></section>
+      <section class="cta"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Start your first lap.</h2><p>Open the ride console, allow location, tap start, and let Slay Moto handle the rest.</p></div><a class="primary-btn" id="ctaStart" href="#rideSection">GO TO RIDE CONSOLE <span>↓</span></a></section>
 
       <section class="history-section">
         <div class="section-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h2>Recent rides.</h2></div><button class="text-btn" id="clearHistoryBtn">CLEAR HISTORY</button></div>
@@ -187,8 +190,8 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="guidance.js?v=12"></script>
-  <script src="app.js?v=12"></script>
-  <script src="pro.js?v=12"></script>
+  <script src="guidance.js?v=13"></script>
+  <script src="app.js?v=13"></script>
+  <script src="pro.js?v=13"></script>
 </body>
 </html>
