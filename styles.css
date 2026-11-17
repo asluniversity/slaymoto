@@ -13,7 +13,7 @@ button,input{font:inherit}button{cursor:pointer}.app-shell{max-width:1440px;marg
 .avatar,.icon-button{border:1px solid var(--line);background:transparent;color:var(--tiffany);width:34px;height:34px;border-radius:50%}.icon-button{border-radius:8px}
 .hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:5%;align-items:center;padding:70px 0 76px;min-height:510px}.eyebrow{font-size:9px;letter-spacing:.22em;color:var(--tiffany);font-weight:700;margin:0 0 18px}.hero h1{font-size:clamp(48px,6vw,82px);line-height:.98;letter-spacing:-.065em;font-weight:500;margin:0}.hero h1 em{font-style:normal;color:var(--tiffany);font-weight:300}.hero-sub{max-width:430px;color:#9bb0b1;line-height:1.8;font-size:13px;margin:24px 0 28px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.primary-btn,.secondary-btn,.end-btn{min-height:48px;padding:0 22px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.14em;display:inline-flex;align-items:center;justify-content:center;gap:12px;transition:.2s}
 .primary-btn{background:var(--tiffany);color:#06201f;border:1px solid var(--tiffany)}.primary-btn:hover{background:var(--tiffany2);transform:translateY(-1px)}.primary-btn:disabled,.end-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}.play{font-size:9px}.secondary-btn{background:transparent;color:var(--text);border:1px solid rgba(196,226,224,.28)}.secondary-btn:hover{border-color:var(--tiffany);color:var(--tiffany)}.hero-footnote{margin-top:32px;color:#688083;font-size:8px;letter-spacing:.2em;display:flex;align-items:center;gap:9px}.pulse{width:6px;height:6px;background:var(--tiffany);border-radius:50%;box-shadow:0 0 12px var(--tiffany)}
-.hero-visual{height:365px;position:relative;border-radius:4px;overflow:hidden;background:#14272d url("https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1400&q=85") center 54%/cover no-repeat}.visual-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,17,22,.12),rgba(7,17,22,.05) 45%,rgba(7,17,22,.58)),linear-gradient(0deg,rgba(7,17,22,.72),transparent 48%)}.visual-caption{position:absolute;bottom:24px;left:26px;display:grid;gap:7px}.visual-caption span{font-size:8px;letter-spacing:.2em;color:var(--tiffany)}.visual-caption b{font-size:23px;font-weight:400;letter-spacing:-.03em}
+.hero-visual{height:365px;position:relative;border-radius:4px;overflow:hidden;background:#14272d none center 54%/cover no-repeat}.visual-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,17,22,.12),rgba(7,17,22,.05) 45%,rgba(7,17,22,.58)),linear-gradient(0deg,rgba(7,17,22,.72),transparent 48%)}.visual-caption{position:absolute;bottom:24px;left:26px;display:grid;gap:7px}.visual-caption span{font-size:8px;letter-spacing:.2em;color:var(--tiffany)}.visual-caption b{font-size:23px;font-weight:400;letter-spacing:-.03em}
 .ride-layout,.guidance-section,.history-section{padding:34px 0 72px;border-top:1px solid var(--line)}.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px}.section-heading h2{font-size:clamp(25px,3vw,36px);font-weight:400;letter-spacing:-.045em;margin:0}.section-heading .eyebrow{margin-bottom:10px}.live-pill,.section-note{font-size:8px;letter-spacing:.16em;color:var(--muted);border:1px solid var(--line);padding:9px 11px;border-radius:3px}.live-pill{display:flex;gap:8px;align-items:center}.live-pill.active{color:var(--tiffany);border-color:rgba(56,189,248,.35)}.live-pill.active i{background:var(--tiffany)}
 .console-grid{display:grid;grid-template-columns:1.55fr .8fr;gap:16px}.map-panel,.stats-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.map-topline,.stats-header{height:48px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;font-size:8px;letter-spacing:.17em;color:#b7c9c8;border-bottom:1px solid var(--line)}.map-topline span+span,.subtle{color:#738c8d;font-size:8px;letter-spacing:.08em}#map{height:390px;background:#12252a;z-index:1}.leaflet-container{font-family:var(--font)}.map-controls{position:absolute;z-index:500;display:flex;flex-direction:column;gap:7px;margin:-112px 14px 0 auto;right:calc(5.2% + 14px)}.map-control{width:34px;height:34px;background:#0b1a20;color:var(--tiffany);border:1px solid rgba(56,189,248,.3);border-radius:7px;font-size:18px}.map-legend{height:38px;display:flex;gap:20px;align-items:center;padding:0 18px;color:#789092;font-size:7px;letter-spacing:.14em}.legend-line{display:inline-block;width:17px;height:2px;background:var(--tiffany);vertical-align:middle;margin-right:6px}.legend-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--tiffany);vertical-align:middle;margin:0 8px 0 0}
 .stats-panel{padding-bottom:18px}.main-stat{padding:24px 22px 20px;border-bottom:1px solid var(--line)}.main-stat small,.stat-pair small{display:block;font-size:8px;letter-spacing:.16em;color:#7e999a;margin-bottom:9px}.main-stat strong{font-size:42px;font-weight:300;letter-spacing:-.06em}.main-stat strong small,.stat-pair strong small{display:inline;font-size:11px;letter-spacing:0;color:var(--muted)}
@@ -146,3 +146,95 @@ body{padding-bottom:84px}
 .cp-turn .t.on{color:#fff;text-shadow:0 0 16px #38bdf8,0 0 34px #38bdf8}.cp-turn .t.hot{color:#fff;text-shadow:0 0 16px #e5554f,0 0 34px #e5554f}
 .cp-logo{filter:drop-shadow(0 0 8px rgba(56,189,248,.7))}.cp-close{border-color:rgba(56,189,248,.45)}.cp-card{border-color:rgba(56,189,248,.4);background:rgba(0,0,0,.75)}
 .cp-preview{border:1px solid #38bdf8;box-shadow:0 0 26px rgba(56,189,248,.4),inset 0 0 26px rgba(56,189,248,.12);background:#000}
+
+/* ---- v12 pro polish: mobile layout, image sizing, ride console start button ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button,a.primary-btn,a.secondary-btn{touch-action:manipulation}
+a.primary-btn,a.secondary-btn{text-decoration:none}
+img{max-width:100%;height:auto}
+.topbar{padding-top:env(safe-area-inset-top)}
+.app-shell{padding-left:max(5.2%,env(safe-area-inset-left));padding-right:max(5.2%,env(safe-area-inset-right))}
+
+/* hero image: real <img>, never stretched, subject kept in frame */
+.hero-visual{background:#0b1118!important;aspect-ratio:auto}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;display:block}
+.hero-visual .visual-overlay,.hero-visual .visual-caption{z-index:1}
+
+/* content images keep their real proportions */
+.how-img img{aspect-ratio:737/492;height:auto;object-fit:cover}
+.world-grid img{object-position:50% 50%}
+.world-grid .tall img{object-position:30% 50%}
+.world-grid figure:nth-child(2) img{object-position:50% 55%}
+
+/* ride console: START RIDE sits here, like START RACE in the race panel */
+.ride-actions{grid-template-columns:1fr 1fr;gap:10px}
+.ride-actions .start-ride{grid-column:1/-1;min-height:54px;font-size:11px}
+.ride-actions .primary-btn:disabled{box-shadow:none}
+.secondary-btn.wide:disabled{opacity:.35;cursor:not-allowed}
+
+/* map controls: anchored inside the map panel (was offset by negative margins) */
+.map-controls{margin:0;right:12px;top:auto;bottom:50px}
+
+/* modals scroll and never overflow the screen */
+.modal{max-height:92vh;max-height:92dvh;overflow:auto}
+#rideImg{display:block;width:auto;max-width:100%;max-height:62vh;max-height:62dvh;margin:0 auto;object-fit:contain}
+.modal-actions{flex-wrap:wrap}
+
+@media(max-width:850px){
+  .hero-visual{min-height:0;height:auto;aspect-ratio:3/2}
+  .hero-actions .primary-btn,.hero-actions .secondary-btn{flex:1 1 200px}
+  .world-grid{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:auto}
+  .world-grid .tall{grid-row:auto;height:auto}
+  .world-grid figure{display:flex;flex-direction:column;background:var(--panel)}
+  .world-grid img{height:auto;aspect-ratio:1200/607}
+  .world-grid .tall img{aspect-ratio:699/441}
+  .world-grid figure:nth-child(3) img{aspect-ratio:1200/381}
+  .world-grid figcaption{position:static;background:none;padding:16px 18px 20px}
+  .cta{flex-direction:column;align-items:stretch;background-position:70% center}
+  .cta .primary-btn{width:100%}
+  .map-controls{right:12px}
+}
+@media(max-width:700px){
+  #map{height:clamp(320px,56vh,520px);height:clamp(320px,56svh,520px);min-height:0}
+  .app-shell{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+}
+@media(max-width:520px){
+  /* readable type: nothing below 10px */
+  .eyebrow,.section-note,.live-pill,.map-topline,.stats-header,.map-topline span+span,.subtle,.main-stat small,.stat-pair small,.details small,.race-pts small,.race-live small,.text-btn,.hero-footnote{font-size:10px}
+  .map-legend{font-size:9px;height:auto;min-height:38px;flex-wrap:wrap;gap:6px 16px;padding:8px 14px}
+  .privacy-note,.legal{font-size:11px}
+  footer{font-size:9px;justify-content:center;text-align:center}
+  .strip{font-size:9px;gap:10px 14px;margin-bottom:48px;padding:14px 8px}
+  .hero{padding:28px 0 36px}
+  .hero h1{font-size:clamp(34px,10.5vw,46px)}
+  .hero-sub{font-size:14px;max-width:none}
+  .how,.world,.race{margin:56px 0}
+  .copilot-promo,.cta{padding:22px;margin-bottom:56px}
+  .section-heading{flex-wrap:wrap}
+  .section-heading h2{font-size:26px}
+  .gps-status #gpsLabel{display:none}
+  .gps-status{padding:0 2px}
+  .gps-status i{width:10px;height:10px}
+  .brand-copy{display:grid}.brand-copy strong{font-size:11px;letter-spacing:.28em}
+  .main-stat strong{font-size:40px}
+  .stat-pair strong{font-size:18px}
+  .details b{font-size:13px}
+  .history-metrics{flex-wrap:wrap;gap:6px 16px}
+  .race-panel{padding:16px}
+  .race-live .wide b{font-size:34px}
+  .chip{min-height:44px}
+  .stats-panel{padding:16px}
+  .ride-actions{padding:14px 0 0}
+  .guide-set{margin:14px 0 4px}
+  .modal-actions .primary-btn,.modal-actions .secondary-btn{flex:1 1 100%}
+  .map-controls{bottom:56px}
+  .copilot-promo p,.steps p{font-size:14px}
+}
+@media(max-width:360px){
+  .hero-actions .primary-btn,.hero-actions .secondary-btn{flex:1 1 100%}
+  .nav-m a{font-size:10px;letter-spacing:.14em}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+/* the HUD and other [hidden] elements must stay hidden even when a class sets display */
+[hidden]{display:none!important}
