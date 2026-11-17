@@ -65,7 +65,7 @@ function onGpsError(err){
 function startRide(){
   if(!('geolocation' in navigator)){alert('This browser does not support GPS location.');return;}
   if(!window.isSecureContext){alert('GPS requires HTTPS. Open this app through GitHub Pages, Netlify, or localhost.');return;}
-  resetSession();Guide.reset();lockScreen();state.rideStart=Date.now();$('rideSection').scrollIntoView({behavior:'smooth'});['dStart','dNow','dHead','dAlt','dAcc'].forEach(i=>$(i).textContent='Locating…');
+  resetSession();Guide.reset();lockScreen();state.rideStart=Date.now();['dStart','dNow','dHead','dAlt','dAcc'].forEach(i=>$(i).textContent='Locating…');
   state.startedAt=Date.now();state.paused=false;
   $('startBtn').disabled=true;$('pauseBtn').disabled=false;$('endBtn').disabled=false;
   $('rideState').classList.add('active');$('rideState').innerHTML='<i></i> RECORDING';
@@ -191,6 +191,5 @@ function showDetails(p){
 }
 $('startRouteBtn').addEventListener('click',()=>{$('routeModal').hidden=true;startRide();});
 
-$('ctaStart').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});$('startBtn').click();});
 
 const LOGO=new Image();LOGO.src='assets/logo.webp';
