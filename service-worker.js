@@ -1,5 +1,5 @@
-const CACHE='slay-moto-v7';
-const CORE=['./','./index.html','./styles.css','./app.js','./guidance.js','./pro.js','./manifest.webmanifest','./assets/icon.svg'];
+const CACHE='slay-moto-v8';
+const CORE=['./','./index.html','./styles.css','./app.js','./guidance.js','./pro.js','./manifest.webmanifest','./assets/icon.svg','./assets/logo.webp','./assets/hero.webp'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE))));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
 self.addEventListener('fetch',event=>{
