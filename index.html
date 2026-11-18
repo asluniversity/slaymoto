@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
   <div class="app-shell">
@@ -20,14 +20,14 @@
       <a class="brand" href="#" aria-label="Slay Moto home">
         <img class="logo" fetchpriority="high" width="42" height="38" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
       </a>
-      <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#copilotSection">CO-PILOT</a></nav>
+      <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#copilotSection">CO-PILOT</a></nav>
       <div class="top-actions">
         <span class="gps-status" title="GPS status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
         <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
         <button class="avatar" aria-label="Profile">R</button>
       </div>
     </header>
-    <nav class="nav-m" aria-label="Sections"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#copilotSection">CO-PILOT</a></nav>
+    <nav class="nav-m" aria-label="Sections"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#copilotSection">CO-PILOT</a></nav>
 
     <main>
       <section class="hero">
@@ -123,6 +123,22 @@
         </div>
       </section>
 
+      <section class="drag" id="dragSection">
+        <div class="section-heading"><div><p class="eyebrow">DRAG MODE</p><h2>Zero to hero. Timed to the hundredth.</h2></div><span class="section-note">CLOSED STRIP · TRACK ONLY</span></div>
+        <div class="drag-grid">
+          <div class="drag-dial"><div id="dgDial"></div><div class="dg-chips"><span id="dgGps">GPS —</span><span id="dgAcc">± — m</span><span id="dgHz">— Hz</span></div></div>
+          <div class="drag-panel">
+            <div class="dg-status" id="dgStatus">PRESS ARM, THEN STAND STILL</div>
+            <div class="dg-timer"><small id="dgLbl">TIME</small><b id="dgTime">0.00</b><span>s</span></div>
+            <label class="dg-veh">VEHICLE <select id="dgVeh"><option>Motorcycle</option><option>Car</option></select></label>
+            <div class="dg-actions"><button class="primary-btn" id="dgArm">ARM</button><button class="secondary-btn" id="dgReset" disabled>RESET</button></div>
+            <div class="dg-table" id="dgTable"></div>
+            <div id="dgHist"></div>
+            <p class="legal">How it works: press ARM and stand still until it says READY. The clock starts the moment you move and stops at the end of your run. Use only on a closed drag strip or track, never on public roads. Timing is from GPS speed, so expect about ±0.2 s on 0–100. A clear view of the sky helps.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="copilot-promo" id="copilotSection">
         <div><p class="eyebrow">LIVE CO-PILOT</p><h2>Your phone sees the corner first.</h2>
           <p>Mount your phone, calibrate once and ride your planned route. The co-pilot reads the road ahead, warns you before every bend and tracks your lean angle in real time.</p>
@@ -175,7 +191,7 @@
     <div class="cp-card"><div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div><div class="cp-approach"><i id="cpDist"></i></div><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE</small></div>
   </div>
 
-  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RIDE</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
+  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RECORD</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
 
   <div class="modal-backdrop" id="routeModal" hidden>
     <div class="modal">
@@ -193,5 +209,6 @@
   <script src="guidance.js?v=13"></script>
   <script src="app.js?v=13"></script>
   <script src="pro.js?v=13"></script>
+  <script src="drag.js?v=14"></script>
 </body>
 </html>
