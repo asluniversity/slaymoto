@@ -258,3 +258,11 @@ img{max-width:100%;height:auto}
 .dg-row.hit{color:#d5dbe0;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.35)}.dg-row.hit b{color:#fff}
 @media(max-width:850px){.drag-grid{grid-template-columns:1fr}.drag{margin:70px 0}.nav-m a{letter-spacing:.1em;font-size:10px}}
 .drag-dial{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+
+/* ---- v16 location gate ---- */
+#locModal{z-index:3000}
+.loc{max-width:420px;width:100%;text-align:center;border:1px solid #38bdf8;box-shadow:0 0 34px rgba(56,189,248,.4),inset 0 0 30px rgba(56,189,248,.08)}
+.loc-pin{display:block;margin:0 auto 6px;filter:drop-shadow(0 0 10px #38bdf8);animation:locp 1.6s ease-in-out infinite}@keyframes locp{50%{transform:translateY(-4px)}}
+.loc h2{font-size:24px;letter-spacing:-.03em;margin:6px 0 10px}.loc p{color:#b9c8d6;font-size:13px;line-height:1.7;margin:0 0 14px}
+.loc-steps{text-align:left;margin:0 0 16px;padding:0 0 0 20px;color:#d5dbe0;font-size:12px;line-height:1.7}.loc-steps:empty{display:none}.loc-steps li{margin-bottom:6px}
+.loc .modal-actions{display:grid;gap:10px;justify-content:stretch}.loc .modal-actions button{width:100%;min-height:50px}.loc .modal-actions button:disabled{opacity:.5}
