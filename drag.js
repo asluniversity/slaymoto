@@ -3,7 +3,7 @@
 const q=id=>document.getElementById(id),D=Math.PI/180;
 const hav=(a,b)=>{const x=Math.sin((b[0]-a[0])*D/2)**2+Math.cos(a[0]*D)*Math.cos(b[0]*D)*Math.sin((b[1]-a[1])*D/2)**2;return 12742000*Math.asin(Math.sqrt(x));};
 const SPL=[['0–50 km/h','v',50],['0–100 km/h','v',100],['0–150 km/h','v',150],['0–200 km/h','v',200],['100 m','d',100],['1/8 mile','d',201.17],['1/4 mile','d',402.34]];
-const S={st:'idle',smp:[],pts:[],sp:[],t0:0,last:null,pl:null,still:0,vmax:0,acc:0,fz:false,tk:[]};
+const STILL=3,S={st:'idle',smp:[],pts:[],sp:[],t0:0,last:null,pl:null,still:0,vmax:0,acc:0,fz:false,tk:[]};
 const cx=150,cy=150,r=118,pt=(a,rr)=>[cx+rr*Math.sin(a*D),cy-rr*Math.cos(a*D)],f=n=>n.toFixed(1);
 q('dgTable').innerHTML=SPL.map((s,i)=>`<div class="dg-row" id="dgr${i}"><span>${s[0]}</span><b id="dgt${i}">—</b><em id="dgx${i}">—</em></div>`).join('');
 function dial(){const A=pt(-120,r),B=pt(120,r);
@@ -19,22 +19,25 @@ function clear(){SPL.forEach((_,i)=>{q('dgr'+i).classList.remove('hit');q('dgt'+
 function arm(){if(['arming','ready','run'].includes(S.st))return;
   Object.assign(S,{st:'arming',smp:[],pts:[],sp:[],t0:0,last:null,pl:null,still:0,vmax:0,acc:0,fz:false,tk:[]});clear();
   S.wid=navigator.geolocation.watchPosition(onFix,e=>status('GPS: '+e.message),{enableHighAccuracy:true,maximumAge:0,timeout:20000});
-  S.iv=setInterval(tick,50);lockScreen();status('WAITING FOR GPS LOCK…');q('dgArm').disabled=true;q('dgReset').disabled=false;q('dgLbl').textContent='TIME';q('dgTime').textContent='0.00';}
-function stop(){navigator.geolocation.clearWatch(S.wid);clearInterval(S.iv);releaseLock();}
+  S.iv=setInterval(tick,50);S.seen=0;S.hb=setInterval(heartbeat,1500);S.wd=setTimeout(()=>{if(!S.seen)status('NO GPS FIX — ALLOW LOCATION & GO OUTDOORS');},7000);lockScreen();status('WAITING FOR GPS LOCK…');q('dgArm').disabled=true;q('dgReset').disabled=false;q('dgLbl').textContent='TIME';q('dgTime').textContent='0.00';}
+function heartbeat(){if((S.st==='arming'||S.st==='ready')&&Date.now()-(S.seen||0)>2500)navigator.geolocation.getCurrentPosition(onFix,()=>{},{enableHighAccuracy:true,maximumAge:0,timeout:5000});}
+function stop(){navigator.geolocation.clearWatch(S.wid);clearInterval(S.iv);clearInterval(S.hb);clearTimeout(S.wd);releaseLock();}
 function reset(){stop();S.st='idle';clear();status('PRESS ARM, THEN STAND STILL');q('dgArm').disabled=false;q('dgArm').textContent='ARM';q('dgReset').disabled=true;setV(0);q('dgTime').textContent='0.00';q('dgLbl').textContent='TIME';}
 function tick(){const n=Date.now();
   if(S.st==='run'&&!S.fz)q('dgTime').textContent=((n-S.t0)/1000).toFixed(2);
   if(S.last&&S.st!=='done')setV(Math.max(0,S.last.v+(S.st==='run'?S.acc:0)*Math.min(1500,n-S.last.t)));}
-function onFix(pos){const c=pos.coords,t=pos.timestamp;if(c.accuracy>35)return;const ll=[c.latitude,c.longitude];
+function onFix(pos){const c=pos.coords,t=pos.timestamp,ll=[c.latitude,c.longitude];S.seen=Date.now();
+  q('dgAcc').textContent='± '+Math.round(c.accuracy)+' m';q('dgGps').textContent=c.accuracy<=8?'GPS STRONG':c.accuracy<=20?'GPS OK':'GPS WEAK';
+  if(c.accuracy>50){if(S.st==='arming')status('GPS TOO WEAK (± '+Math.round(c.accuracy)+' m) — MOVE OUTDOORS');S.pl={ll,t};return;}
   let v=c.speed!=null&&c.speed>=0?c.speed*3.6:null;
-  if(v==null&&S.pl&&t>S.pl.t)v=hav(S.pl.ll,ll)/((t-S.pl.t)/1000)*3.6;
+  if(v==null&&S.pl&&t>S.pl.t){const d=hav(S.pl.ll,ll);v=d<Math.max(4,c.accuracy)?0:d/((t-S.pl.t)/1000)*3.6;}
   S.pl={ll,t};if(v==null)v=0;if(S.last&&t<=S.last.t)return;
   S.tk.push(t);if(S.tk.length>6)S.tk.shift();
   q('dgAcc').textContent='± '+Math.round(c.accuracy)+' m';q('dgGps').textContent=c.accuracy<=8?'GPS STRONG':c.accuracy<=20?'GPS OK':'GPS WEAK';
   if(S.tk.length>1)q('dgHz').textContent=((S.tk.length-1)*1000/(S.tk[S.tk.length-1]-S.tk[0])).toFixed(1)+' Hz';
   const p={t,v};
-  if(S.st==='arming'){if(v<1.5){if(++S.still>=2){S.st='ready';status('READY — GO!',1);}else status('HOLD STILL…');}else{S.still=0;status('STAND STILL TO ARM…');}}
-  else if(S.st==='ready'&&v>=1.5){launch(p);S.last=p;return;}
+  if(S.st==='arming'){if(v<STILL){if(++S.still>=2){S.st='ready';status('READY — GO!',1);}else status('HOLD STILL…');}else{S.still=0;status('STAND STILL TO ARM…');}}
+  else if(S.st==='ready'&&v>=STILL){launch(p);S.last=p;return;}
   else if(S.st==='run'){run(p);if(S.st==='run')S.last=p;return;}
   S.last=p;setV(v);}
 function launch(p){const L=S.last||{t:p.t-1000,v:0};S.smp=[L,p];S.st='run';S.vmax=p.v;S.acc=0;status('GO!',1);rebuild();show();}
@@ -47,7 +50,7 @@ function splits(){const p=S.pts;return SPL.map(([,k,T])=>{for(let i=1;i<p.length
 function show(){const sp=S.sp=splits();sp.forEach((s,i)=>{if(!s)return;q('dgr'+i).classList.add('hit');q('dgt'+i).textContent=(s.t/1000).toFixed(2)+' s';q('dgx'+i).textContent=Math.round(s.x)+(SPL[i][1]==='v'?' m':' km/h');});
   if(sp[1]&&!S.fz){S.fz=true;q('dgTime').textContent=(sp[1].t/1000).toFixed(2);q('dgLbl').textContent='0–100 KM/H';}}
 function run(p){S.smp.push(p);rebuild();const m=S.pts,L=m[m.length-1],B=m[m.length-2];S.vmax=Math.max(S.vmax,p.v);S.acc=(p.v-B.v)/(p.t-B.t);
-  if(S.smp.length<=4&&p.v<1.5){S.smp=[];S.st='ready';S.acc=0;status('READY — GO!',1);return;}
+  if(S.smp.length<=4&&p.v<STILL){S.smp=[];S.st='ready';S.acc=0;status('READY — GO!',1);return;}
   show();if(L.d>=420||p.v>=240||(S.vmax>20&&p.v<S.vmax-8)||L.t-S.t0>60000)finish();}
 function finish(){if(S.st!=='run')return;S.st='done';stop();show();const L=S.pts[S.pts.length-1];
   if(!S.fz)q('dgTime').textContent=((L.t-S.t0)/1000).toFixed(2);
