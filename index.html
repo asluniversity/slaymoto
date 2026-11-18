@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
   <div class="app-shell">
@@ -191,6 +191,17 @@
     <div class="cp-card"><div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div><div class="cp-approach"><i id="cpDist"></i></div><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE</small></div>
   </div>
 
+  <div class="modal-backdrop" id="locModal" hidden>
+    <div class="modal loc" role="dialog" aria-modal="true" aria-labelledby="locTitle">
+      <svg class="loc-pin" viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#38bdf8" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      <p class="eyebrow">LOCATION REQUIRED</p>
+      <h2 id="locTitle">Turn on your location</h2>
+      <p id="locText"></p>
+      <ol class="loc-steps" id="locSteps"></ol>
+      <div class="modal-actions"><button class="primary-btn" id="locGo">ENABLE LOCATION</button><button class="secondary-btn" id="locClose">NOT NOW</button></div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RECORD</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
 
   <div class="modal-backdrop" id="routeModal" hidden>
@@ -210,5 +221,6 @@
   <script src="app.js?v=13"></script>
   <script src="pro.js?v=13"></script>
   <script src="drag.js?v=15"></script>
+  <script src="gate.js?v=16"></script>
 </body>
 </html>
