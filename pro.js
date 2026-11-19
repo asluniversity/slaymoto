@@ -50,7 +50,7 @@ function finish(te){if(!R.run)return;R.run=false;navigator.geolocation.clearWatc
   q('raceMsg').textContent=`Finished: ${fmt(total)} · ${(R.dist/1000).toFixed(2)} km · avg ${Math.round(avg)} km/h · top ${Math.round(R.max)} km/h`+(R.laps.length?` · best lap ${fmt(Math.min(...R.laps))}`:'');
   hist();showRace(rec);}
 function hist(){const l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');
-  q('raceHistory').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0"><b>${r.mode==='circuit'?r.laps.length+' LAPS':'A → B'}</b><span>${fmt(r.total)} · ${(r.dist/1000).toFixed(2)} km · ${Math.round(r.avg)} km/h avg · ${new Date(r.date).toLocaleDateString()}</span></div>`).join('');}
+  q('raceHistory').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0"><img class="rh-th" alt="" src="${window.SlayShape?SlayShape.thumb(r.pts):''}"><div class="rh-m"><b>${r.mode==='circuit'?r.laps.length+' LAPS':'A → B'}</b><span>${fmt(r.total)} · ${(r.dist/1000).toFixed(2)} km · ${Math.round(r.avg)} km/h avg · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
 q('raceHistory').onclick=e=>{const d=e.target.closest('.rh');if(d)showRace(JSON.parse(localStorage.getItem('slayMotoRaces')||'[]')[d.dataset.i]);};
 function raceImage(r){
   const W=1080,H=1640,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
