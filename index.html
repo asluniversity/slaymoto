@@ -7,6 +7,15 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="SLAY MOTO — a refined ride tracking and navigation companion for motorcyclists.">
   <title>SLAY MOTO — Ride with clarity</title>
+  <script>
+/* always start at the top after a reload */
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+(function(){var n=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
+if(n&&n.type==='reload'&&location.hash)history.replaceState(null,'',location.pathname+location.search);
+function top(){if(location.hash)return;var d=document.documentElement,s=d.style.scrollBehavior;d.style.scrollBehavior='auto';window.scrollTo(0,0);d.style.scrollBehavior=s;}
+top();addEventListener('DOMContentLoaded',top);addEventListener('load',function(){top();setTimeout(top,80);});
+addEventListener('pageshow',function(e){if(e.persisted)top();});})();
+</script>
   <link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
   <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
   <link rel="manifest" href="manifest.webmanifest">
