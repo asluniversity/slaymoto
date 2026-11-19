@@ -266,3 +266,8 @@ img{max-width:100%;height:auto}
 .loc h2{font-size:24px;letter-spacing:-.03em;margin:6px 0 10px}.loc p{color:#b9c8d6;font-size:13px;line-height:1.7;margin:0 0 14px}
 .loc-steps{text-align:left;margin:0 0 16px;padding:0 0 0 20px;color:#d5dbe0;font-size:12px;line-height:1.7}.loc-steps:empty{display:none}.loc-steps li{margin-bottom:6px}
 .loc .modal-actions{display:grid;gap:10px;justify-content:stretch}.loc .modal-actions button{width:100%;min-height:50px}.loc .modal-actions button:disabled{opacity:.5}
+
+/* ---- v18 path + start mode ---- */
+#dgTrack{width:100%;height:auto;margin-top:12px;border-radius:12px;background:rgba(56,189,248,.05);border:1px solid var(--line)}.dg-cap{display:block;text-align:center;font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:6px}
+.dg-mode{display:flex;gap:8px}.dg-hint{display:block;font-size:11px;line-height:1.6;color:var(--muted);margin-top:-4px}
+.rh{align-items:center}.rh-th{width:64px;height:44px;border-radius:8px;flex:none;border:1px solid var(--line)}.rh-m{flex:1;min-width:0;display:flex;justify-content:space-between;gap:4px 10px;flex-wrap:wrap}
