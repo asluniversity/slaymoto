@@ -33,8 +33,9 @@ function arm(){if(S.st==='ready'&&MODE==='cd'){countdown();return;}if(['arming',
   S.iv=setInterval(tick,50);S.seen=0;S.hb=setInterval(heartbeat,1500);S.wd=setTimeout(()=>{if(!S.seen)status('NO GPS FIX — ALLOW LOCATION & GO OUTDOORS');},7000);lockScreen();status('WAITING FOR GPS LOCK…');q('dgArm').disabled=true;q('dgReset').disabled=false;q('dgLbl').textContent='TIME';q('dgTime').textContent='0.00';}
 function heartbeat(){if((S.st==='arming'||S.st==='ready')&&Date.now()-(S.seen||0)>2500)navigator.geolocation.getCurrentPosition(onFix,()=>{},{enableHighAccuracy:true,maximumAge:0,timeout:5000});}
 function stop(){clearTimeout(S.ct);clearTimeout(S.gw);navigator.geolocation.clearWatch(S.wid);clearInterval(S.iv);clearInterval(S.hb);clearTimeout(S.wd);releaseLock();}
-function reset(){stop();S.st='idle';S.goT=0;trace();clear();status('PRESS ARM, THEN STAND STILL');q('dgArm').disabled=false;q('dgArm').textContent='ARM';q('dgReset').disabled=true;setV(0);q('dgTime').textContent='0.00';q('dgLbl').textContent='TIME';}
+function reset(){if(S.st==='run'){finish();return;}stop();S.st='idle';S.goT=0;trace();clear();status('PRESS ARM, THEN STAND STILL');q('dgArm').disabled=false;q('dgArm').textContent='ARM';q('dgReset').disabled=true;q('dgReset').textContent='RESET';setV(0);q('dgTime').textContent='0.00';q('dgLbl').textContent='TIME';}
 function tick(){const n=Date.now();
+  if(S.st==='run'&&S.last&&n-S.last.t>5000){finish();return;}
   if(S.st==='run'&&!S.fz)q('dgTime').textContent=((n-S.t0)/1000).toFixed(2);
   if(S.last&&S.st!=='done')setV(Math.max(0,S.last.v+(S.st==='run'?S.acc:0)*Math.min(1500,n-S.last.t)));}
 function onFix(pos){const c=pos.coords,t=pos.timestamp,ll=[c.latitude,c.longitude];S.seen=Date.now();
@@ -53,7 +54,7 @@ function onFix(pos){const c=pos.coords,t=pos.timestamp,ll=[c.latitude,c.longitud
   else if(S.st==='ready'&&v>=STILL){clearTimeout(S.gw);launch(p);S.last=p;return;}
   else if(S.st==='run'){run(p);if(S.st==='run')S.last=p;return;}
   S.last=p;setV(v);}
-function launch(p){const L=S.last||{t:p.t-1000,v:0};S.smp=[L,p];S.st='run';S.vmax=p.v;S.acc=0;status('GO!',1);q('dgLbl').textContent='TIME';rebuild();show();}
+function launch(p){const L=S.last||{t:p.t-1000,v:0};S.smp=[L,p];S.st='run';S.vmax=p.v;S.vmT=p.t;S.acc=0;q('dgReset').disabled=false;q('dgReset').textContent='STOP & SAVE';status('GO!',1);q('dgLbl').textContent='TIME';rebuild();show();}
 function rebuild(){const m=S.smp,P0=m[0],P1=m[1];let t0=(P0.t+P1.t)/2;
   if(m.length>2){const a=(m[2].v-P1.v)/(m[2].t-P1.t);if(a>0)t0=P1.t-P1.v/a;}
   t0=Math.min(P1.t,Math.max(P0.t,t0));S.t0=t0;const pts=[{t:t0,v:0,d:0,ll:P0.ll||P1.ll}];
@@ -64,9 +65,9 @@ function trace(){const c=q('dgTrack');if(!c||!window.SlayShape)return;const g=c.
   SlayShape.draw(g,S.pts.filter(p=>p.ll).map(p=>[p.ll[0],p.ll[1],p.v]),18,14,c.width-36,c.height-28,{lw:7});}
 function show(){trace();const sp=S.sp=splits();sp.forEach((s,i)=>{if(!s)return;q('dgr'+i).classList.add('hit');q('dgt'+i).textContent=(s.t/1000).toFixed(2)+' s';q('dgx'+i).textContent=Math.round(s.x)+(SPL[i][1]==='v'?' m':' km/h');});
   if(sp[1]&&!S.fz){S.fz=true;q('dgTime').textContent=(sp[1].t/1000).toFixed(2);q('dgLbl').textContent='0–100 KM/H';}}
-function run(p){S.smp.push(p);rebuild();const m=S.pts,L=m[m.length-1],B=m[m.length-2];S.vmax=Math.max(S.vmax,p.v);S.acc=(p.v-B.v)/(p.t-B.t);
+function run(p){S.smp.push(p);rebuild();const m=S.pts,L=m[m.length-1],B=m[m.length-2];if(p.v>S.vmax+0.5)S.vmT=p.t;S.vmax=Math.max(S.vmax,p.v);S.acc=(p.v-B.v)/(p.t-B.t);
   if(S.smp.length<=4&&p.v<STILL){S.smp=[];S.st='ready';S.acc=0;ready();return;}
-  show();if(L.d>=420||p.v>=240||(S.vmax>20&&p.v<S.vmax-8)||L.t-S.t0>60000)finish();}
+  show();if(L.d>=420||p.v>=240||(S.vmax>20&&p.v<S.vmax-8)||(S.vmax>20&&L.t-S.t0>4000&&p.t-S.vmT>4000)||L.t-S.t0>60000)finish();}
 function finish(){if(S.st!=='run')return;S.st='done';stop();show();const L=S.pts[S.pts.length-1];
   if(!S.fz)q('dgTime').textContent=((L.t-S.t0)/1000).toFixed(2);
   setV(S.vmax);
@@ -74,7 +75,7 @@ function finish(){if(S.st!=='run')return;S.st='done';stop();show();const L=S.pts
   let l=JSON.parse(localStorage.getItem('slayMotoDrag')||'[]');l.unshift(rec);l=l.slice(0,10);
   for(;;){try{localStorage.setItem('slayMotoDrag',JSON.stringify(l));break;}catch(e){if(l.length<=1)break;l.pop();}}
   status('FINISHED — '+(S.sp[1]?'0–100 IN '+(S.sp[1].t/1000).toFixed(2)+' S':'TOP '+Math.round(S.vmax)+' KM/H'));
-  q('dgArm').disabled=false;q('dgArm').textContent='ARM AGAIN';hist();showImg(rec);}
+  q('dgArm').disabled=false;q('dgArm').textContent='ARM AGAIN';q('dgReset').disabled=false;q('dgReset').textContent='RESET';hist();showImg(rec);}
 function path(r){return (r.pts||[]).filter(p=>p[3]).map(p=>[p[3],p[4],p[1]]);}
 function hist(){const l=JSON.parse(localStorage.getItem('slayMotoDrag')||'[]');
   q('dgHist').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0">${window.SlayShape?`<img class="rh-th" alt="" src="${SlayShape.thumb(path(r))}">`:''}<div class="rh-m"><b>${r.sp[1]?r.sp[1][0].toFixed(2)+' s · 0–100':'top '+Math.round(r.vmax)+' km/h'}</b><span>${r.sp[6]?'1/4 mi '+r.sp[6][0].toFixed(2)+' s · ':''}${r.veh} · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
