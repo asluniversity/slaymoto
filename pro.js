@@ -17,15 +17,21 @@ const here=k=>getOrigin().then(o=>o?setPt(k,o):alert('Location unavailable. Allo
 q('setA').onclick=()=>here('A');q('setB').onclick=()=>here('B');
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{if(R.run)return;R.mode=b.dataset.mode;
   document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));q('rowB').hidden=R.mode==='circuit';});
-function laps(){const best=Math.min(...R.laps);q('lapList').innerHTML=R.laps.map((t,i)=>`<li${t===best?' class="best"':''}><span>LAP ${i+1}</span><b>${fmt(t)}</b></li>`).join('');}
+R.sm=localStorage.getItem('slayMotoRaceStart')==='line'?'line':'now';
+function setSm(m){R.sm=m;try{localStorage.setItem('slayMotoRaceStart',m);}catch(e){}document.querySelectorAll('[data-rs]').forEach(b=>b.classList.toggle('on',b.dataset.rs===m));
+  q('rcHint').textContent=m==='now'?'The clock starts the moment you press START RACE.':'The clock starts when you cross the start line (30 m gate).';}
+document.querySelectorAll('[data-rs]').forEach(b=>b.onclick=()=>{if(R.run)return;setSm(b.dataset.rs);});setSm(R.sm);
+function rtrace(){const c=q('rcTrack');if(!c||!window.SlayShape)return;const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);SlayShape.draw(g,R.pts.map(x=>[x[0],x[1],x[2]]),18,14,c.width-36,c.height-28,{lw:6});}
+function laps(){const best=Math.min(...R.laps);let s=0;q('lapList').innerHTML=R.laps.map((t,i)=>{const e=R.lapIdx[i]||R.pts.length,P=R.pts.slice(s,e).map(x=>[x[0],x[1]]);s=e;
+  const th=window.SlayShape&&P.length>1?`<img class="lap-th" alt="" src="${SlayShape.thumb(P,72,48)}">`:'';return `<li${t===best?' class="best"':''}>${th}<span>LAP ${i+1}</span><b>${fmt(t)}</b></li>`;}).join('');}
 function tick(){const n=Date.now();q('rTime').textContent=R.t0?fmt(n-R.t0):'0:00.0';q('rLap').textContent=R.t0&&R.mode==='circuit'?fmt(n-R.lt0):'—';
   q('rLaps').textContent=R.laps.length;q('rDist').textContent=(R.dist/1000).toFixed(2);q('rSpeed').textContent=Math.round(R.v);}
 function start(){
   if(!R.A||(R.mode==='p2p'&&!R.B)){q('raceMsg').textContent='Set '+(R.A?'a finish':'a start')+' point first.';return;}
-  Object.assign(R,{run:true,laps:[],dist:0,prev:null,p:null,away:false,max:0,v:0,t0:0,lt0:0,pts:[]});q('lapList').innerHTML='';
+  Object.assign(R,{run:true,laps:[],dist:0,prev:null,p:null,away:false,max:0,v:0,t0:0,lt0:0,pts:[],lapIdx:[]});q('lapList').innerHTML='';if(R.sm==='now')R.t0=R.lt0=Date.now();rtrace();
   R.track=L.polyline([],{color:'#38bdf8',weight:4}).addTo(map);
   R.wid=navigator.geolocation.watchPosition(onR,e=>q('raceMsg').textContent='GPS: '+e.message,{enableHighAccuracy:true,maximumAge:0,timeout:20000});
-  R.iv=setInterval(tick,100);lockScreen();q('raceGo').textContent='STOP RACE';q('raceMsg').textContent='Armed — the clock starts when you cross the start line.';
+  R.iv=setInterval(tick,100);lockScreen();q('raceGo').textContent='STOP RACE';q('raceMsg').textContent=R.sm==='now'?'Race running — the clock has started.':'Armed — the clock starts when you cross the start line.';
 }
 function onR(pos){const c=pos.coords;if(c.accuracy>40)return;const ll=[c.latitude,c.longitude],t=pos.timestamp,d=hav(ll,R.A),dB=R.B?hav(ll,R.B):1e9;
   R.v=c.speed!=null&&c.speed>=0?c.speed*3.6:0;let tx=0,enter=0,exit=0,enterB=0,tB=0;
@@ -36,15 +42,15 @@ function onR(pos){const c=pos.coords;if(c.accuracy>40)return;const ll=[c.latitud
   if(!R.t0&&(enter||exit)){R.t0=R.lt0=tx;R.away=false;R.prev=null;q('raceMsg').textContent='Race running.';}
   if(!R.t0)return;
   if(R.prev){const dd=hav(R.prev,ll);if(dd>2){R.dist+=dd;R.prev=ll;}}else R.prev=ll;
-  R.max=Math.max(R.max,R.v);R.track.addLatLng(ll);R.pts.push([ll[0],ll[1],R.v,t]);
+  R.max=Math.max(R.max,R.v);R.track.addLatLng(ll);R.pts.push([ll[0],ll[1],R.v,t]);rtrace();
   if(d>100)R.away=true;
-  if(R.mode==='circuit'&&enter&&R.away&&tx-R.lt0>15000){R.laps.push(tx-R.lt0);R.lt0=tx;R.away=false;laps();}
+  if(R.mode==='circuit'&&enter&&R.away&&tx-R.lt0>15000){R.laps.push(tx-R.lt0);R.lapIdx.push(R.pts.length);R.lt0=tx;R.away=false;laps();}
   if(R.mode==='p2p'&&enterB&&R.away)finish(tB);}
 function finish(te){if(!R.run)return;R.run=false;navigator.geolocation.clearWatch(R.wid);clearInterval(R.iv);releaseLock();q('raceGo').textContent='START RACE';
   if(!R.t0){q('raceMsg').textContent='Race never started — you did not cross the start line.';return;}
   const total=(te||Date.now())-R.t0,avg=total>0?R.dist/1000/(total/3600000):0,k=Math.max(1,Math.ceil(R.pts.length/600));
   const pts=R.pts.filter((_,i)=>i%k===0||i===R.pts.length-1).map(x=>[+x[0].toFixed(5),+x[1].toFixed(5),Math.round(x[2]),+((x[3]-R.t0)/1000).toFixed(1)]);
-  const rec={mode:R.mode,date:Date.now(),total,dist:R.dist,max:R.max,avg,laps:R.laps,A:R.nA,B:R.nB,pts};
+  const rec={mode:R.mode,date:Date.now(),total,dist:R.dist,max:R.max,avg,laps:R.laps,A:R.nA,B:R.nB,li:R.lapIdx.map(i=>Math.round(i/k)),sm:R.sm,pts};
   let l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');l.unshift(rec);l=l.slice(0,10);
   for(;;){try{localStorage.setItem('slayMotoRaces',JSON.stringify(l));break;}catch(e){if(l.length<=1)break;l.pop();}}
   q('raceMsg').textContent=`Finished: ${fmt(total)} · ${(R.dist/1000).toFixed(2)} km · avg ${Math.round(avg)} km/h · top ${Math.round(R.max)} km/h`+(R.laps.length?` · best lap ${fmt(Math.min(...R.laps))}`:'');
@@ -53,7 +59,7 @@ function hist(){const l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');
   q('raceHistory').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0"><img class="rh-th" alt="" src="${window.SlayShape?SlayShape.thumb(r.pts):''}"><div class="rh-m"><b>${r.mode==='circuit'?r.laps.length+' LAPS':'A → B'}</b><span>${fmt(r.total)} · ${(r.dist/1000).toFixed(2)} km · ${Math.round(r.avg)} km/h avg · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
 q('raceHistory').onclick=e=>{const d=e.target.closest('.rh');if(d)showRace(JSON.parse(localStorage.getItem('slayMotoRaces')||'[]')[d.dataset.i]);};
 function raceImage(r){
-  const W=1080,H=1640,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
+  const W=1080,H=1720,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
   g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO · RACE RECORD',60,90);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-60-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='24px sans-serif';g.fillText(new Date(r.date).toLocaleString()+'  ·  '+(r.mode==='circuit'?'CIRCUIT':'POINT TO POINT'),60,130);
   const vs=p.map(x=>x[2]),mn=Math.min(...vs),mx=Math.max(...vs)||1,col=v=>`hsl(${200-200*((v-mn)/((mx-mn)||1))},90%,55%)`;
@@ -71,11 +77,14 @@ function raceImage(r){
     let cum=0;g.setLineDash([6,6]);r.laps.forEach(l=>{cum+=l/1000;g.beginPath();g.moveTo(cx(cum),1200);g.lineTo(cx(cum),1400);g.stroke();});g.setLineDash([]);
     g.beginPath();p.forEach((x,i)=>i?g.lineTo(cx(x[3]),cy(x[2])):g.moveTo(cx(x[3]),cy(x[2])));g.lineWidth=3;g.strokeStyle='#38bdf8';g.stroke();
     g.fillStyle='#8aa0b4';g.fillText('0:00',60,1430);g.textAlign='right';g.fillText(fmt(T*1000)+'  ·  top '+mx+' km/h',1020,1430);g.textAlign='left';}
-  g.fillStyle='#eef7f6';g.font='22px sans-serif';r.laps.slice(0,6).forEach((l,i)=>g.fillText('LAP '+(i+1)+'   '+fmt(l),60+(i%2)*330,1480+Math.floor(i/2)*34));
-  g.fillStyle='#8aa0b4';g.fillText('FROM  '+(r.A||'start point').slice(0,48),60,1600);if(r.mode==='p2p')g.fillText('TO      '+(r.B||'finish point').slice(0,48),560,1600);
+  if(r.li&&r.li.length&&r.laps.length){const L=r.laps,pp=r.pts||[],best=Math.min(...L);let s=0;g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText('LAP SHAPES',60,1462);
+    L.slice(0,6).forEach((l,i)=>{const e=r.li[i]||pp.length,seg=pp.slice(s,e),x=60+i*165,y=1476;s=e;g.fillStyle=l===best?'rgba(79,209,139,.16)':'rgba(255,255,255,.05)';g.fillRect(x,y,150,100);
+      if(window.SlayShape&&seg.length>1)SlayShape.draw(g,seg.map(a=>[a[0],a[1],a[2]]),x+10,y+10,130,80,{lw:4});g.fillStyle=l===best?'#4fd18b':'#eef7f6';g.font='700 22px sans-serif';g.fillText('LAP '+(i+1)+'  '+fmt(l),x,y+130);});}
+  else{g.fillStyle='#eef7f6';g.font='22px sans-serif';r.laps.slice(0,6).forEach((l,i)=>g.fillText('LAP '+(i+1)+'   '+fmt(l),60+(i%2)*330,1480+Math.floor(i/2)*34));}
+  g.fillStyle='#8aa0b4';g.fillText('FROM  '+(r.A||'start point').slice(0,48),60,1690);if(r.mode==='p2p')g.fillText('TO      '+(r.B||'finish point').slice(0,48),560,1690);
   return c;}
 function showRace(r){if(!r)return;const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-race.png';q('imgModal').hidden=false;}
-q('raceGo').onclick=()=>R.run?finish():start();hist();
+q('raceGo').onclick=()=>R.run?finish():start();hist();window.__slayRace={R,onR,start,finish};
 /* ---------- CO-PILOT ---------- */
 const C={g:'#7dd3fc',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
 const P={open:false,wid:null,prev:null,hp:null,w:0,lean:0,mL:0,mR:0};
