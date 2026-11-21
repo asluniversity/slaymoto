@@ -271,3 +271,17 @@ img{max-width:100%;height:auto}
 #dgTrack{width:100%;height:auto;margin-top:12px;border-radius:12px;background:rgba(56,189,248,.05);border:1px solid var(--line)}.dg-cap{display:block;text-align:center;font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:6px}
 .dg-mode{display:flex;gap:8px}.dg-hint{display:block;font-size:11px;line-height:1.6;color:var(--muted);margin-top:-4px}
 .rh{align-items:center}.rh-th{width:64px;height:44px;border-radius:8px;flex:none;border:1px solid var(--line)}.rh-m{flex:1;min-width:0;display:flex;justify-content:space-between;gap:4px 10px;flex-wrap:wrap}
+
+/* ---- v19 ride alerts + race lap shapes ---- */
+.ride-alerts{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:0 0 16px;padding:14px 16px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,26,36,.9),rgba(11,17,24,.9));--c:#8aa0b4}
+.ra-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1 1 360px}
+.ra{display:grid;justify-items:center;gap:5px;padding:10px 4px;border-radius:14px;border:1px solid var(--line);opacity:.35;transition:opacity .15s,transform .15s,box-shadow .15s;color:var(--k)}
+.ra svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ra b{font-size:9px;letter-spacing:.12em;color:#d5dbe0;text-align:center}
+.ra[data-l=g]{--k:#4fd18b}.ra[data-l=y]{--k:#e7d25b}.ra[data-l=o]{--k:#e58b52}.ra[data-l=r]{--k:#e5554f}
+.ra.on{opacity:1;border-color:var(--k);box-shadow:0 0 22px -4px var(--k);transform:scale(1.04)}
+.ra[data-l=g].on{background:rgba(79,209,139,.14)}.ra[data-l=y].on{background:rgba(231,210,91,.14)}.ra[data-l=o].on{background:rgba(229,139,82,.16)}.ra[data-l=r].on{background:rgba(229,85,79,.18)}
+.ride-alerts.alert .ra.on{animation:rap .8s ease-in-out infinite}@keyframes rap{50%{transform:scale(1.09)}}
+.ra-text{flex:1 1 200px;min-width:0}.ra-text b{display:block;font-size:18px;letter-spacing:.05em;color:var(--c)}.ra-text small{color:var(--muted);font-size:12px}
+#rcTrack{width:100%;height:auto;border-radius:12px;background:rgba(56,189,248,.05);border:1px solid var(--line)}
+.laps li{align-items:center;gap:10px}.laps li span{flex:1}.lap-th{width:48px;height:32px;border-radius:6px;flex:none}
+@media(max-width:520px){.ra b{font-size:8px;letter-spacing:.08em}.ride-alerts{padding:12px}}
