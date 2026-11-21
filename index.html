@@ -21,7 +21,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 </head>
 <body>
   <div class="app-shell">
@@ -75,7 +75,9 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
           <div><p class="eyebrow">LIVE RIDE CONSOLE</p><h2>Your ride, in real time.</h2></div>
           <span class="live-pill" id="rideState"><i></i> READY</span>
         </div>
-        <div class="ride-alerts" id="rideAlerts">
+        <div class="cockpit" id="cockpit">
+          <div class="ck-top"><img class="ck-logo" src="assets/logo.webp" alt="SLAY"><div class="ck-chips"><span id="ckState">READY</span><span id="ckGps">GPS —</span></div></div>
+          <div class="ride-alerts" id="rideAlerts">
           <div class="ra-tiles">
             <div class="ra" data-l="g"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><b>SPEED OK</b></div>
             <div class="ra" data-l="y"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17v.5"/></svg><b>EASE OFF</b></div>
@@ -83,6 +85,16 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
             <div class="ra" data-l="r"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l9.5 17h-19z"/><path d="M9.5 17.5c0-4 5-3.5 5-8"/><path d="M12.6 10.6l2-2 2 2"/></svg><b>CORNER</b></div>
           </div>
           <div class="ra-text"><b id="raMsg">NO ROUTE YET</b><small id="raSub">Plan a route to see speed and corner alerts here.</small></div>
+        </div>
+          <div class="ck-dial" id="ckDial"></div>
+          <div class="ck-tgt" id="ckTgtLbl"></div>
+          <div class="ck-stats"><div><small>DISTANCE</small><b id="ckDist">0.00</b><i>km</i></div><div><small>TIME</small><b id="ckTime">00:00:00</b></div><div><small>AVG</small><b id="ckAvg">—</b><i>km/h</i></div><div><small>MAX</small><b id="ckMax">—</b><i>km/h</i></div></div>
+          <div class="ride-actions">
+              <button class="primary-btn wide start-ride" id="startBtn"><span class="play">▶</span> START RIDE</button>
+              <button class="secondary-btn wide" id="ckPlan">PLAN ROUTE <span>↗</span></button>
+              <button class="secondary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
+              <button class="end-btn wide" id="endBtn" disabled>END RIDE</button>
+            </div>
         </div>
         <div class="console-grid">
           <div class="map-panel">
@@ -113,11 +125,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
               <div><small>ALTITUDE</small><b id="dAlt">—</b></div><div><small>GPS ACCURACY</small><b id="dAcc">—</b></div>
             </div>
             <div class="guide-set"><label>RIDING STYLE<select id="profileSel"><option value="calm">Calm</option><option value="normal" selected>Normal</option><option value="sport">Sport</option></select></label><label class="chk"><input type="checkbox" id="voiceChk" checked> VOICE ALERTS</label></div>
-            <div class="ride-actions">
-              <button class="primary-btn wide start-ride" id="startBtn"><span class="play">▶</span> START RIDE</button>
-              <button class="secondary-btn wide" id="pauseBtn" disabled>PAUSE RIDE</button>
-              <button class="end-btn wide" id="endBtn" disabled>END RIDE</button>
-            </div>
+            
             <p class="privacy-note">Location is used only while this ride session is active. Keep your phone securely mounted and never interact with the screen while moving.</p>
           </aside>
         </div>
@@ -246,6 +254,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <script src="shape.js?v=18"></script>
   <script src="pro.js?v=19"></script>
   <script src="drag.js?v=18"></script>
+  <script src="cockpit.js?v=20"></script>
   <script src="gate.js?v=16"></script>
 </body>
 </html>
