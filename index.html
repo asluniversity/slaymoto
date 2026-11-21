@@ -21,7 +21,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=19">
 </head>
 <body>
   <div class="app-shell">
@@ -75,6 +75,15 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
           <div><p class="eyebrow">LIVE RIDE CONSOLE</p><h2>Your ride, in real time.</h2></div>
           <span class="live-pill" id="rideState"><i></i> READY</span>
         </div>
+        <div class="ride-alerts" id="rideAlerts">
+          <div class="ra-tiles">
+            <div class="ra" data-l="g"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><b>SPEED OK</b></div>
+            <div class="ra" data-l="y"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17v.5"/></svg><b>EASE OFF</b></div>
+            <div class="ra" data-l="o"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v8M8.5 12l3.5 3.5 3.5-3.5"/></svg><b>SLOW DOWN</b></div>
+            <div class="ra" data-l="r"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l9.5 17h-19z"/><path d="M9.5 17.5c0-4 5-3.5 5-8"/><path d="M12.6 10.6l2-2 2 2"/></svg><b>CORNER</b></div>
+          </div>
+          <div class="ra-text"><b id="raMsg">NO ROUTE YET</b><small id="raSub">Plan a route to see speed and corner alerts here.</small></div>
+        </div>
         <div class="console-grid">
           <div class="map-panel">
             <div class="map-topline"><span>LIVE ROUTE MAP</span><span id="mapHint">Waiting for GPS</span></div>
@@ -120,12 +129,15 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
           <div class="race-map"><div id="raceMap"></div></div>
           <div class="race-panel">
             <div class="race-modes"><button class="chip on" data-mode="circuit">CIRCUIT · LAPS</button><button class="chip" data-mode="p2p">POINT TO POINT</button></div>
+            <div class="race-modes"><button class="chip on" data-rs="now">START NOW</button><button class="chip" data-rs="line">CROSS THE LINE</button></div>
+            <small class="dg-hint" id="rcHint"></small>
             <div class="race-pts">
               <div><small>START / FINISH LINE</small><b id="ptA">Not set</b><button class="secondary-btn" id="setA">USE MY LOCATION</button></div>
               <div id="rowB" hidden><small>FINISH POINT</small><b id="ptB">Not set</b><button class="secondary-btn" id="setB">USE MY LOCATION</button></div>
               <p class="legal">Or tap the map to place the point. Lines are 30 m gates; laps are timed by GPS (about ±1 s).</p>
             </div>
             <div class="race-live"><div class="wide"><small>TOTAL TIME</small><b id="rTime">0:00.0</b></div><div><small>CURRENT LAP</small><b id="rLap">—</b></div><div><small>LAPS</small><b id="rLaps">0</b></div><div><small>DISTANCE km</small><b id="rDist">0.00</b></div><div><small>SPEED km/h</small><b id="rSpeed">0</b></div></div>
+            <canvas id="rcTrack" width="560" height="110" aria-label="Your lap path"></canvas>
             <button class="primary-btn" id="raceGo">START RACE</button><p class="legal" id="raceMsg">Set your start point, then press start.</p>
             <ol class="laps" id="lapList"></ol><div id="raceHistory"></div>
           </div>
@@ -229,10 +241,10 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="guidance.js?v=13"></script>
+  <script src="guidance.js?v=19"></script>
   <script src="app.js?v=13"></script>
   <script src="shape.js?v=18"></script>
-  <script src="pro.js?v=18"></script>
+  <script src="pro.js?v=19"></script>
   <script src="drag.js?v=18"></script>
   <script src="gate.js?v=16"></script>
 </body>
