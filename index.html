@@ -21,7 +21,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
   <div class="app-shell">
@@ -54,6 +54,15 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
           <img class="hero-img" src="assets/hero.webp" width="737" height="491" alt="SLAY rider leaning into a corner on a race track" fetchpriority="high" decoding="async">
           <div class="visual-overlay"></div>
           <div class="visual-caption"><span>01 / THE LINE</span><b>Find your line.</b></div>
+        </div>
+      </section>
+
+      <section class="world">
+        <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
+        <div class="world-grid">
+          <figure class="tall"><img src="assets/hoodie.webp" width="699" height="441" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
+          <figure><img src="assets/car1.webp" width="1200" height="607" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
+          <figure><img src="assets/car2.webp" width="1200" height="381" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
         </div>
       </section>
 
@@ -194,14 +203,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
         <p class="legal">Guidance is advisory and based on route geometry only. It cannot see surface, weather, traffic or legal limits. Always ride to the conditions and obey local law.</p>
       </section>
 
-      <section class="world">
-        <div class="section-heading"><div><p class="eyebrow">THE SLAY WORLD</p><h2>Built on racing. Worn on the street.</h2></div></div>
-        <div class="world-grid">
-          <figure class="tall"><img src="assets/hoodie.webp" width="699" height="441" alt="SLAY hoodie, Racing Performance Lifestyle" loading="lazy" decoding="async"><figcaption><span>LIFESTYLE</span><b>Racing Performance Lifestyle</b><p>Gear made for the paddock and the street. Wear the line you ride.</p></figcaption></figure>
-          <figure><img src="assets/car1.webp" width="1200" height="607" alt="SLAY racing division car on track" loading="lazy" decoding="async"><figcaption><span>RACING DIVISION</span><b>Where speed meets precision.</b><p>Every limit is pushed on track, never on public roads.</p></figcaption></figure>
-          <figure><img src="assets/car2.webp" width="1200" height="381" alt="SLAY race car in the rain" loading="lazy" decoding="async"><figcaption><span>ALL CONDITIONS</span><b>Rain or shine.</b><p>Ride aware, ride ready.</p></figcaption></figure>
-        </div>
-      </section>
+      
 
       <section class="cta"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Start your first lap.</h2><p>Open the ride console, allow location, tap start, and let Slay Moto handle the rest.</p></div><a class="primary-btn" id="ctaStart" href="#rideSection">GO TO RIDE CONSOLE <span>↓</span></a></section>
 
@@ -252,7 +254,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <script src="guidance.js?v=19"></script>
   <script src="app.js?v=13"></script>
   <script src="shape.js?v=18"></script>
-  <script src="pro.js?v=19"></script>
+  <script src="pro.js?v=21"></script>
   <script src="drag.js?v=18"></script>
   <script src="cockpit.js?v=20"></script>
   <script src="gate.js?v=16"></script>
