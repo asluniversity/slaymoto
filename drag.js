@@ -1,4 +1,4 @@
-/* SLAY MOTO drag: GPS-timed 0-100 km/h, splits, 1/8 and 1/4 mile. Closed courses only. */
+/* SLAY RACING drag: GPS-timed 0-100 km/h, splits, 1/8 and 1/4 mile. Closed courses only. */
 (()=>{
 const q=id=>document.getElementById(id),D=Math.PI/180;
 const hav=(a,b)=>{const x=Math.sin((b[0]-a[0])*D/2)**2+Math.cos(a[0]*D)*Math.cos(b[0]*D)*Math.sin((b[1]-a[1])*D/2)**2;return 12742000*Math.asin(Math.sqrt(x));};
@@ -86,7 +86,7 @@ function path(r){return (r.pts||[]).filter(p=>p[3]).map(p=>[p[3],p[4],p[1]]);}
 function hist(){const l=JSON.parse(localStorage.getItem('slayMotoDrag')||'[]');
   q('dgHist').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0">${window.SlayShape?`<img class="rh-th" alt="" src="${SlayShape.thumb(path(r))}">`:''}<div class="rh-m"><b>${r.sp[1]?r.sp[1][0].toFixed(2)+' s · '+((r.lb&&r.lb[1])||'0–100 km/h'):'top '+Math.round(SlayUnits.spd(r.vmax))+' '+SlayUnits.sl()}</b><span>${r.sp[6]?'1/4 mi '+r.sp[6][0].toFixed(2)+' s · ':''}${r.veh} · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
 function img(r){const W=1080,H=1900,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
-  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO · DRAG RECORD',60,90);
+  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY RACING · DRAG RECORD',60,90);
   if(!window.__noLogo&&typeof LOGO!=='undefined'&&LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-60-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='24px sans-serif';g.fillText(new Date(r.date).toLocaleString()+'  ·  '+r.veh.toUpperCase(),60,130);
   g.font='26px sans-serif';g.fillText(((r.lb&&r.lb[1])||'0–100 km/h').toUpperCase(),60,230);g.fillStyle='#fff';g.font='italic 800 170px sans-serif';const tx=r.sp[1]?r.sp[1][0].toFixed(2):'—';g.fillText(tx,60,390);
@@ -106,7 +106,7 @@ function img(r){const W=1080,H=1900,c=document.createElement('canvas');c.width=W
   if(r.sp[1]){g.setLineDash([8,8]);g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.moveTo(X(r.sp[1][0]),Yd(0));g.lineTo(X(r.sp[1][0]),Yd(Vm));g.stroke();g.setLineDash([]);}
   g.fillStyle='#8aa0b4';g.fillText('0 s',60,1760);g.textAlign='right';g.fillText(T.toFixed(1)+' s',1020,1760);g.textAlign='left';
   g.fillText('TOP SPEED '+Math.round(cv(r.vmax))+(mph?' MPH':' KM/H')+'  ·  GPS-TIMED, ABOUT ±0.2 S',60,1840);return c;}
-function showImg(r){if(!r)return;window.__rec={type:'drag',rec:r};let u;try{u=img(r).toDataURL('image/png');}catch(e){window.__noLogo=1;u=img(r).toDataURL('image/png');}q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-drag.png';q('imgModal').hidden=false;}
+function showImg(r){if(!r)return;window.__rec={type:'drag',rec:r};let u;try{u=img(r).toDataURL('image/png');}catch(e){window.__noLogo=1;u=img(r).toDataURL('image/png');}q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-racing-drag.png';q('imgModal').hidden=false;}
 q('dgHist').onclick=e=>{const d=e.target.closest('.rh');if(d)showImg(JSON.parse(localStorage.getItem('slayMotoDrag')||'[]')[d.dataset.i]);};
 q('dgArm').onclick=arm;q('dgReset').onclick=reset;document.querySelectorAll('#dgMode [data-m]').forEach(b=>b.onclick=()=>{if(['arming','ready','run','cd'].includes(S.st))return;setMode(b.dataset.m);});setMode(MODE);hist();setV(0);
 window.__slayDrag={fix:onFix,S,setMode,countdown};
