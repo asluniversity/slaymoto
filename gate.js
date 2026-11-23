@@ -2,7 +2,7 @@
 (()=>{
 const q=id=>document.getElementById(id),UA=navigator.userAgent;
 const IOS=/iP(hone|ad|od)/.test(UA)||(/Mac/.test(UA)&&navigator.maxTouchPoints>1),AND=/Android/.test(UA);
-const SEL='#startBtn,#planBtn,#findRoute,#locateBtn,#setA,#setB,#raceGo,#dgArm,#openCopilot';
+const SEL='#startBtn,#planBtn,#findRoute,#locateBtn,#setA,#setB,#raceGo,#dgArm,#openCopilot,#condGo';
 const STEPS={
   ios:['Open Settings → Privacy & Security → Location Services and switch it On.','Scroll to Safari Websites (or your browser) and choose “While Using the App”, with Precise Location on.','In Safari tap the “aA” icon → Website Settings → Location → Allow.','Come back here and tap Try again.'],
   and:['Swipe down from the top of the screen and turn Location (GPS) on.','Tap the lock or ⋮ icon next to the address → Site settings → Location → Allow.','Set Location accuracy to Precise.','Come back here and tap Try again.'],
