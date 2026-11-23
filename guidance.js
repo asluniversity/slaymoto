@@ -8,7 +8,7 @@ let cbs=[],prof='normal',voice=true,o=null,pts=[],rs=[],raw=[],lim=[],idx=0,last
 const $=id=>document.getElementById(id);
 const xy=(lat,lng)=>({x:rad(lng-o.lng)*R*Math.cos(rad(o.lat)),y:rad(lat-o.lat)*R});
 function build(){const p=P[prof],n=pts.length;
-  raw=rs.map(r=>Math.max(4,Math.min(p.cap/3.6,Math.sqrt(p.lat*r))));
+  raw=rs.map(r=>Math.max(4,Math.min(p.cap/3.6,Math.sqrt(p.lat*VF()*r))));
   lim=raw.slice();for(let i=n-2;i>=0;i--)lim[i]=Math.min(lim[i],Math.sqrt(lim[i+1]**2+2*p.brake*STEP));}
 function load(coords){
   o={lat:coords[0][0],lng:coords[0][1]};
@@ -33,9 +33,10 @@ function draw(coords,map){
   g.addTo(map);hud('g','ROUTE LOADED',null,null);return g;
 }
 const emit=i=>cbs.forEach(f=>f(i));
-function alerts(l,msg,t,d){const a=$('rideAlerts');if(!a)return;if(msg==='ROUTE LOADED')l=null;
+let LA=[null,'NO ROUTE YET',null,null];const VF=()=>document.body.dataset.vehicle==='car'?1.4:1;
+function alerts(l,msg,t,d){LA=[l,msg,t,d];const a=$('rideAlerts');if(!a)return;if(msg==='ROUTE LOADED')l=null;
   a.querySelectorAll('.ra').forEach(e=>e.classList.toggle('on',e.dataset.l===l));a.style.setProperty('--c',l?COL[l]:'#8aa0b4');
-  $('raMsg').textContent=msg;$('raSub').textContent=msg==='NO ROUTE YET'?'Plan a route to see speed and corner alerts here.':l==null?'Start your ride to get live alerts.':d!=null?`Corner in ${d} m · aim for ${t} km/h`:t!=null?`Target speed ${t} km/h`:'';
+  $('raMsg').textContent=msg;$('raSub').textContent=msg==='NO ROUTE YET'?'Plan a route to see speed and corner alerts here.':l==null?'Start your ride to get live alerts.':d!=null?`Corner in ${SlayUnits.sm(d)} · aim for ${Math.round(SlayUnits.spd(t)/5)*5} ${SlayUnits.sl()}`:t!=null?`Target speed ${Math.round(SlayUnits.spd(t)/5)*5} ${SlayUnits.sl()}`:'';
   a.classList.toggle('alert',l==='o'||l==='r');}
 function hud(l,msg,t,d){alerts(l,msg,t,d);const h=$('hud');if(!h)return;h.hidden=false;h.style.setProperty('--c',COL[l]);
   $('hudTarget').textContent=t==null?'--':t;$('hudMsg').textContent=msg;$('hudDist').textContent=d==null?'':`CORNER IN ${d} m`;}
@@ -54,11 +55,12 @@ function update(p,spd){
   const msg={g:'SPEED OK',y:'EASE OFF',o:'SLOW DOWN',r:cd!==null?'CORNER AHEAD — BRAKE':'TOO FAST'}[l];
   hud(l,msg,Math.round(allowed/5)*5,cd);emit({l,msg,allowed,cd,ct,cr,spd});
   const now=Date.now();
-  if((l==='o'||l==='r')&&(l!==last||now-lastSay>9000)){lastSay=now;say(l==='r'&&cd!==null?`Corner ahead. Slow to ${Math.round(ct/5)*5}`:'Slow down',l);}
+  if((l==='o'||l==='r')&&(l!==last||now-lastSay>9000)){lastSay=now;say(l==='r'&&cd!==null?`Corner ahead. Slow to ${Math.round(SlayUnits.spd(ct)/5)*5}`:'Slow down',l);}
   last=l;
 }
 function reset(){idx=0;last='g';}
 function clear(){alerts(null,'NO ROUTE YET',null,null);pts=[];rs=[];raw=[];lim=[];const h=$('hud');if(h)h.hidden=true;}
 return{onInfo:f=>{cbs.push(f);},hasRoute:()=>pts.length>0,draw,update,reset,clear,setProfile:v=>{prof=v;if(pts.length)build();},setVoice:v=>{voice=v;}};
 alerts(null,'NO ROUTE YET',null,null);
+document.addEventListener('slayunits',()=>alerts(...LA));document.addEventListener('slayvehicle',()=>{if(pts.length)build();});
 })();
