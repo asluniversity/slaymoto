@@ -1,4 +1,4 @@
-/* SLAY MOTO — PWA ride tracker. GPS works on HTTPS or localhost. */
+/* SLAY RACING — PWA ride tracker. GPS works on HTTPS or localhost. */
 const $ = (id) => document.getElementById(id);
 const state = {
   map:null, marker:null, track:null, route:null, watchId:null, timerId:null,
@@ -166,13 +166,13 @@ function rideImage(r){
     [[24,'rgba(56,189,248,.16)'],[8,'#38bdf8']].forEach(([lw,col])=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(X(p),Y(p)):g.moveTo(X(p),Y(p)));g.lineWidth=lw;g.strokeStyle=col;g.stroke();});
     [[pts[0],'#4fd18b'],[pts[pts.length-1],'#e5554f']].forEach(([p,col])=>{g.beginPath();g.arc(X(p),Y(p),14,0,7);g.fillStyle=col;g.fill();g.lineWidth=4;g.strokeStyle='#05080d';g.stroke();});
   }
-  g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO',70,100);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-70-lw,40,lw,72);}
+  g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY RACING',70,100);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-70-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='26px sans-serif';g.fillText(new Date(r.date).toLocaleString(),70,145);g.fillStyle='#eef7f6';g.font='24px sans-serif';g.fillText('FROM  '+(r.startPlace||'—').slice(0,55),70,1270);g.fillText('TO      '+(r.endPlace||'—').slice(0,55),70,1310);
   const st=[['DISTANCE',SlayUnits.dist(r.distance)],['TIME',formatTime(r.elapsed)],['AVG',Math.round(SlayUnits.spd(r.avg||0))+' '+SlayUnits.sl()],['MAX',Math.round(SlayUnits.spd(r.max||0))+' '+SlayUnits.sl()]];
   st.forEach(([l,v],i)=>{const x=70+i*250;g.fillStyle='#8aa0b4';g.font='22px sans-serif';g.fillText(l,x,1150);g.fillStyle='#eef7f6';g.font='700 38px sans-serif';g.fillText(v,x,1200);});
   return c;
 }
-function showRideImage(r){if(!r)return;window.__rec={type:'ride',rec:r};const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('dlImg').download='slay-moto-ride.png';$('imgModal').hidden=false;}
+function showRideImage(r){if(!r)return;window.__rec={type:'ride',rec:r};const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('dlImg').download='slay-racing-ride.png';$('imgModal').hidden=false;}
 $('closeImg').addEventListener('click',()=>$('imgModal').hidden=true);
 $('historyList').addEventListener('click',e=>{const a=e.target.closest('.history-item');if(a)showRideImage(JSON.parse(localStorage.getItem('slayMotoRides')||'[]')[a.dataset.i]);});
 $('profileSel').addEventListener('change',e=>Guide.setProfile(e.target.value));
