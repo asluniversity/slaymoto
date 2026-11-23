@@ -25,10 +25,10 @@ function formatTime(ms){
 function elapsedMs(){return state.elapsedBeforePause+(state.startedAt&&!state.paused?Date.now()-state.startedAt:0)}
 function updateStats(){
   $('elapsed').textContent=formatTime(elapsedMs());
-  $('distance').innerHTML=`${(state.distance/1000).toFixed(2)} <small>km</small>`;
-  $('avgSpeed').innerHTML=`${state.distance&&elapsedMs()>0?Math.round((state.distance/1000)/(elapsedMs()/3600000)):'—'}${state.distance?` <small>km/h</small>`:''}`;
-  $('liveSpeed').innerHTML=state.currentSpeed===null?'— <small>km/h</small>':`${Math.round(state.currentSpeed)} <small>km/h</small>`;
-  $('maxSpeed').innerHTML=state.maxSpeed?`${Math.round(state.maxSpeed)} <small>km/h</small>`:'— <small>km/h</small>';
+  $('distance').innerHTML=`${SlayUnits.dv(state.distance).toFixed(2)} <small>${SlayUnits.du()}</small>`;
+  $('avgSpeed').innerHTML=`${state.distance&&elapsedMs()>0?Math.round(SlayUnits.spd((state.distance/1000)/(elapsedMs()/3600000))):'—'}${state.distance?` <small>${SlayUnits.sl()}</small>`:''}`;
+  $('liveSpeed').innerHTML=state.currentSpeed===null?`— <small>${SlayUnits.sl()}</small>`:`${Math.round(SlayUnits.spd(state.currentSpeed))} <small>${SlayUnits.sl()}</small>`;
+  $('maxSpeed').innerHTML=state.maxSpeed?`${Math.round(SlayUnits.spd(state.maxSpeed))} <small>${SlayUnits.sl()}</small>`:`— <small>${SlayUnits.sl()}</small>`;
 }
 function haversine(a,b){
   const R=6371000,toRad=v=>v*Math.PI/180;
@@ -38,9 +38,9 @@ function haversine(a,b){
 }
 function onPosition(pos){
   const p={lat:pos.coords.latitude,lng:pos.coords.longitude,time:pos.timestamp,accuracy:pos.coords.accuracy,heading:pos.coords.heading,alt:pos.coords.altitude};
-  if(p.accuracy>50){$('mapHint').textContent=`GPS accuracy ±${Math.round(p.accuracy)}m`;return;}
+  if(p.accuracy>50){$('mapHint').textContent=`GPS accuracy ±${SlayUnits.sm(p.accuracy)}`;return;}
   const speed=pos.coords.speed;
-  state.currentSpeed=speed===null?null:Math.max(0,speed*3.6);
+  state.currentSpeed=speed===null?null:Math.max(0,speed*3.6);p.v=state.currentSpeed;
   if(state.currentSpeed!==null)state.maxSpeed=Math.max(state.maxSpeed,state.currentSpeed);
   if(state.lastFix){
     const delta=haversine(state.lastFix,p);
@@ -54,7 +54,7 @@ function onPosition(pos){
   }else state.marker.setLatLng([p.lat,p.lng]);
   state.track.setLatLngs(state.points.map(x=>[x.lat,x.lng]));
   state.map.setView([p.lat,p.lng],Math.max(state.map.getZoom(),15),{animate:true});
-  $('mapHint').textContent=`GPS accuracy ±${Math.round(p.accuracy)}m`;
+  $('mapHint').textContent=`GPS accuracy ±${SlayUnits.sm(p.accuracy)}`;
   setGps(true,'GPS CONNECTED');updateStats();
 }
 function onGpsError(err){
@@ -105,7 +105,7 @@ function endRide(){
 }
 function renderHistory(){
   const rides=JSON.parse(localStorage.getItem('slayMotoRides')||'[]');
-  $('historyList').innerHTML=rides.length?rides.map((r,i)=>`<article class="history-item" data-i="${i}" tabindex="0"><div><strong>Ride ${String(rides.length-i).padStart(2,'0')}</strong><small>${new Date(r.date).toLocaleString()}</small></div><div class="history-metrics"><span>${(r.distance/1000).toFixed(2)} km</span><span>${formatTime(r.elapsed)}</span><span>${Math.round(r.max||0)} km/h max</span></div></article>`).join(''):'<div class="empty-state">Your completed rides will appear here.</div>';
+  $('historyList').innerHTML=rides.length?rides.map((r,i)=>`<article class="history-item" data-i="${i}" tabindex="0"><div><strong>Ride ${String(rides.length-i).padStart(2,'0')}</strong><small>${new Date(r.date).toLocaleString()}</small></div><div class="history-metrics"><span>${SlayUnits.dist(r.distance)}</span><span>${formatTime(r.elapsed)}</span><span>${Math.round(SlayUnits.spd(r.max||0))} ${SlayUnits.sl()} max</span></div></article>`).join(''):'<div class="empty-state">Your completed rides will appear here.</div>';
 }
 function locateMe(){
   if(!navigator.geolocation){alert('GPS is not supported.');return;}
@@ -130,7 +130,7 @@ async function findRoute(){
     if(state.route)state.map.removeLayer(state.route);
     state.route=Guide.draw(coords,state.map);
     state.map.fitBounds(state.route.getBounds(),{padding:[35,35]});
-    $('routeMessage').textContent=`Suggested route: ${(data.routes[0].distance/1000).toFixed(1)} km · ${Math.round(data.routes[0].duration/60)} min (estimate)`;$('startRouteBtn').hidden=false;
+    $('routeMessage').textContent=`Suggested route: ${SlayUnits.dist(data.routes[0].distance,1)} · ${Math.round(data.routes[0].duration/60)} min (estimate)`;$('startRouteBtn').hidden=false;
   }catch(e){$('routeMessage').textContent=e.message;}
 }
 function registerPwa(){
@@ -152,7 +152,7 @@ function releaseLock(){try{wl&&wl.release();}catch(e){}wl=null;}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&state.startedAt&&!state.paused)lockScreen();});
 function saveRide(ride){
   const k=Math.max(1,Math.ceil(ride.points.length/1500));
-  ride.points=ride.points.filter((_,i)=>i%k===0||i===ride.points.length-1).map(p=>({lat:+p.lat.toFixed(6),lng:+p.lng.toFixed(6)}));
+  ride.points=ride.points.filter((_,i)=>i%k===0||i===ride.points.length-1).map(p=>({lat:+p.lat.toFixed(6),lng:+p.lng.toFixed(6),t:p.time?Math.round(p.time/1000):null,v:p.v==null?null:Math.round(p.v),a:p.alt==null?null:Math.round(p.alt)}));
   let rides=JSON.parse(localStorage.getItem('slayMotoRides')||'[]');rides.unshift(ride);rides=rides.slice(0,30);
   for(;;){try{localStorage.setItem('slayMotoRides',JSON.stringify(rides));break;}catch(e){if(rides.length<=1)break;rides.pop();}}
 }
@@ -168,11 +168,11 @@ function rideImage(r){
   }
   g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO',70,100);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-70-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='26px sans-serif';g.fillText(new Date(r.date).toLocaleString(),70,145);g.fillStyle='#eef7f6';g.font='24px sans-serif';g.fillText('FROM  '+(r.startPlace||'—').slice(0,55),70,1270);g.fillText('TO      '+(r.endPlace||'—').slice(0,55),70,1310);
-  const st=[['DISTANCE',(r.distance/1000).toFixed(2)+' km'],['TIME',formatTime(r.elapsed)],['AVG',Math.round(r.avg||0)+' km/h'],['MAX',Math.round(r.max||0)+' km/h']];
+  const st=[['DISTANCE',SlayUnits.dist(r.distance)],['TIME',formatTime(r.elapsed)],['AVG',Math.round(SlayUnits.spd(r.avg||0))+' '+SlayUnits.sl()],['MAX',Math.round(SlayUnits.spd(r.max||0))+' '+SlayUnits.sl()]];
   st.forEach(([l,v],i)=>{const x=70+i*250;g.fillStyle='#8aa0b4';g.font='22px sans-serif';g.fillText(l,x,1150);g.fillStyle='#eef7f6';g.font='700 38px sans-serif';g.fillText(v,x,1200);});
   return c;
 }
-function showRideImage(r){if(!r)return;const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('dlImg').download='slay-moto-ride.png';$('imgModal').hidden=false;}
+function showRideImage(r){if(!r)return;window.__rec={type:'ride',rec:r};const url=rideImage(r).toDataURL('image/png');$('rideImg').src=url;$('dlImg').href=url;$('dlImg').download='slay-moto-ride.png';$('imgModal').hidden=false;}
 $('closeImg').addEventListener('click',()=>$('imgModal').hidden=true);
 $('historyList').addEventListener('click',e=>{const a=e.target.closest('.history-item');if(a)showRideImage(JSON.parse(localStorage.getItem('slayMotoRides')||'[]')[a.dataset.i]);});
 $('profileSel').addEventListener('change',e=>Guide.setProfile(e.target.value));
@@ -185,7 +185,7 @@ function showDetails(p){
   const set=(i,v)=>$(i).textContent=v;
   set('dStartTime',state.rideStart?new Date(state.rideStart).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'—');
   set('dHead',p.heading!=null&&!isNaN(p.heading)?['N','NE','E','SE','S','SW','W','NW'][Math.round(p.heading/45)%8]+' '+Math.round(p.heading)+'°':'—');
-  set('dAlt',p.alt!=null?Math.round(p.alt)+' m':'—');set('dAcc','±'+Math.round(p.accuracy)+' m');
+  set('dAlt',p.alt!=null?SlayUnits.sm(p.alt):'—');set('dAcc','±'+SlayUnits.sm(p.accuracy));
   if(!state.geoStart){state.geoStart=1;state.lastGeo=Date.now();place(p.lat,p.lng).then(v=>{state.startPlace=v;state.nowPlace=v;set('dStart',v||'Unknown');set('dNow',v||'Unknown');});}
   else if(Date.now()-state.lastGeo>30000){state.lastGeo=Date.now();place(p.lat,p.lng).then(v=>{if(v){state.nowPlace=v;set('dNow',v);}});}
 }
