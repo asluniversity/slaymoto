@@ -307,3 +307,52 @@ img{max-width:100%;height:auto}
 .hero{min-height:0;padding-block:28px 6px}.hero+.world{margin-top:44px}
 @media(min-width:851px){.hero-visual{min-height:380px}.hero h1{font-size:clamp(40px,4.6vw,64px)}}
 @media(max-width:850px){.hero{padding-block:20px 0}.hero+.world{margin-top:14px}}
+
+/* ---- v23 units toggle ---- */
+.unit-toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-right:10px}
+.unit-toggle button{background:transparent;border:0;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em;padding:8px 11px;min-height:34px}
+.unit-toggle button.on{background:rgba(56,189,248,.18);color:#7dd3fc}
+@media(max-width:520px){.unit-toggle{margin-right:6px}.unit-toggle button{padding:8px 8px;font-size:9px}}
+
+/* ---- v23 share + toast ---- */
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:4000;max-width:min(92vw,460px);padding:12px 18px;border-radius:14px;background:rgba(5,8,13,.96);border:1px solid #38bdf8;box-shadow:0 0 26px rgba(56,189,248,.4);color:#fff;font-size:13px;line-height:1.5;text-align:center;opacity:0;pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#imgModal .modal-actions{display:grid;gap:10px}#imgModal .modal-actions>*{width:100%;min-height:48px;text-align:center;justify-content:center}
+
+/* ---- v23 records ---- */
+.records{margin:90px 0}.rec-tabs{display:flex;gap:8px;margin:0 0 14px;max-width:420px}
+.rec-import{display:flex;gap:8px;margin:0 0 14px}.rec-import input{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--text)}.rec-import button{min-height:44px;padding-inline:18px}
+.rec-table{display:grid;gap:8px}.rec-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,26,36,.9),rgba(11,17,24,.9));cursor:pointer}
+.rec-row.sel{border-color:#38bdf8;box-shadow:0 0 20px -6px #38bdf8}.rec-row input{width:20px;height:20px;accent-color:#38bdf8;flex:none}
+.rec-row .rh-m{flex:1;min-width:0;display:grid;gap:2px}.rec-row .rh-m b{font-size:14px}.rec-row .rh-m span{font-size:11px;color:var(--muted)}
+.pb{font-style:normal;font-size:9px;font-weight:800;letter-spacing:.12em;padding:2px 7px;border-radius:999px;background:#38bdf8;color:#02131f;margin-left:6px}.fr{font-style:normal;font-size:9px;letter-spacing:.1em;padding:2px 7px;border-radius:999px;border:1px solid #e7d25b;color:#e7d25b;margin-left:6px}
+.rec-del{background:transparent;border:0;color:var(--muted);font-size:16px;min-width:40px;min-height:40px}
+.rec-compare{margin-top:16px;padding:18px;border-radius:20px;border:1px solid #38bdf8;background:#000;box-shadow:0 0 26px rgba(56,189,248,.3)}
+.cmp-head{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.cmp-head>div{display:grid;gap:2px;justify-items:center;text-align:center}.cmp-th{width:110px;height:72px;border-radius:10px;border:1px solid var(--line)}.cmp-head small{color:var(--muted);font-size:10px}
+.cmp-a b{color:#38bdf8}.cmp-b b{color:#fff}.cmp-table{width:100%;border-collapse:collapse;font-size:12px}.cmp-table th,.cmp-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}.cmp-table td:first-child{text-align:left;color:var(--muted)}
+.cmp-table .win{color:#4fd18b;font-weight:700}.cmp-table .lose{color:#e5554f}.rec-canvas{width:100%;height:auto;margin-top:14px;border-radius:12px;background:rgba(255,255,255,.03)}
+@media(max-width:850px){.records{margin:70px 0}}
+
+/* ---- v23 conditions, about, tour, more menu, car mode ---- */
+.nav{gap:18px}.nav-m button{flex:1;text-align:center;padding:13px 4px;border-radius:12px;font-size:10px;letter-spacing:.1em;font-weight:700;color:var(--text);background:transparent;border:0}
+.nav-m a{letter-spacing:.06em}
+.sheet{position:fixed;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:1300;display:grid;gap:4px;padding:8px;border-radius:18px;background:rgba(11,17,24,.96);border:1px solid #38bdf8;box-shadow:0 0 30px rgba(56,189,248,.35)}
+.sheet[hidden]{display:none}.sheet a,.sheet button{display:block;padding:15px 12px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--text);text-decoration:none;background:transparent;border:0;text-align:left}.sheet a:active,.sheet button:active{background:rgba(56,189,248,.16)}
+@media(min-width:851px){.sheet,#moreBtn{display:none!important}}
+.cond{margin:90px 0}.cond-card{max-width:760px;padding:22px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,26,36,.9),rgba(11,17,24,.9));display:grid;gap:14px}
+.cond-intro{margin:0;color:#b9c8d6;font-size:13px;line-height:1.7}.cond-err{color:#e5554f}
+.cond-verdict{display:flex;flex-direction:column;gap:2px;padding:16px 18px;border-radius:16px;border:2px solid var(--c);background:rgba(0,0,0,.4);box-shadow:0 0 24px -6px var(--c)}.cond-verdict b{font-size:34px;letter-spacing:.08em;color:var(--c)}.cond-verdict span{font-size:12px;color:#b9c8d6}
+.cond-why{margin:0;padding:0;list-style:none;display:grid;gap:6px}.cond-why li{padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.5;background:rgba(255,255,255,.04);border-left:3px solid #4fd18b}.cond-why li.l1{border-color:#e7d25b}.cond-why li.l2{border-color:#e5554f}
+.cond-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ct{padding:12px;border-radius:12px;background:rgba(56,189,248,.06);border:1px solid var(--line);min-width:0}.ct small{display:block;font-size:8px;letter-spacing:.16em;color:var(--muted);margin-bottom:4px}.ct b{font-size:18px}.ct span{display:block;font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.about{margin:90px 0 40px}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.about-card{padding:20px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,26,36,.9),rgba(11,17,24,.9));display:grid;gap:10px;align-content:start}
+.about-card h3{margin:0;font-size:16px}.about-card p{margin:0;color:#b9c8d6;font-size:13px;line-height:1.7}.wl{font-size:10px!important;letter-spacing:.16em;color:var(--muted)!important;margin-top:4px!important}
+.wchips{display:flex;gap:8px}.wchips .chip{min-height:42px}.wsteps{margin:0;padding-left:18px;color:#d5dbe0;font-size:13px;line-height:1.7;display:grid;gap:8px}
+.set-input{min-height:44px;padding:0 12px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--text)}.contact-btns{display:flex;gap:8px;flex-wrap:wrap}.contact-btns a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:44px;padding-inline:16px}
+.faq{margin-top:16px;display:grid;gap:8px}.faq details{border:1px solid var(--line);border-radius:14px;padding:4px 16px;background:rgba(255,255,255,.03)}.faq summary{cursor:pointer;padding:12px 0;font-size:13px;font-weight:700;list-style:none}.faq p{margin:0 0 12px;color:#b9c8d6;font-size:13px;line-height:1.7}
+footer a{color:inherit}
+#welcomeModal{z-index:3500}.welcome{max-width:440px;width:100%;border:1px solid #38bdf8;box-shadow:0 0 34px rgba(56,189,248,.4);display:grid;gap:12px;text-align:left}.wl-logo{height:26px;width:auto;justify-self:start}.welcome h2{margin:0;font-size:24px;letter-spacing:-.03em}.welcome p{margin:0;color:#b9c8d6;font-size:13px;line-height:1.7}
+.wl-dots{display:flex;gap:6px;justify-content:center}.wl-dots i{width:8px;height:8px;border-radius:50%;background:#2a3540}.wl-dots i.on{background:#38bdf8;box-shadow:0 0 10px #38bdf8}.wl-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wl-actions button{min-height:48px}.wl-skip{background:transparent;border:0;color:var(--muted);font-size:12px;padding:6px}
+[data-vehicle="car"] .copilot .cp-gauge,[data-vehicle="car"] .copilot .cp-turn,[data-vehicle="car"] #cpCal{display:none}
+[data-vehicle="car"] .copilot{grid-template-rows:auto auto minmax(0,1fr) auto}[data-vehicle="car"] .cp-speedrow{align-self:center}[data-vehicle="car"] .cp-speed b{font-size:clamp(110px,34vw,200px)}
+@media(max-width:850px){.about-grid{grid-template-columns:1fr}.cond,.about{margin:70px 0 30px}}
+[data-vehicle="car"] #cpSrc{display:none}
