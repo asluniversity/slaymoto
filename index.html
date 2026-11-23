@@ -21,7 +21,8 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=22">
+  <link rel="stylesheet" href="styles.css?v=24">
+<script>window.SLAY_CONTACT={email:"",instagram:"",telegram:"",whatsapp:"",website:""};</script>
 </head>
 <body>
   <div class="app-shell">
@@ -29,14 +30,15 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
       <a class="brand" href="#" aria-label="Slay Moto home">
         <img class="logo" fetchpriority="high" width="42" height="38" src="assets/logo.webp" alt="SLAY"><span class="brand-copy"><strong>MOTO</strong><small>RACING · PERFORMANCE</small></span>
       </a>
-      <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#copilotSection">CO-PILOT</a></nav>
+      <nav class="nav"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#recordsSection">RECORDS</a><a href="#condSection">CONDITIONS</a><a href="#copilotSection">CO-PILOT</a><a href="#aboutSection">ABOUT</a></nav>
       <div class="top-actions">
+        <div class="unit-toggle" role="group" aria-label="Speed units"><button data-unit="kmh">KM/H</button><button data-unit="mph">MPH</button></div>
         <span class="gps-status" title="GPS status"><i id="gpsDot"></i><span id="gpsLabel">GPS NOT CONNECTED</span></span>
         <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
         <button class="avatar" aria-label="Profile">R</button>
       </div>
     </header>
-    <nav class="nav-m" aria-label="Sections"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#copilotSection">CO-PILOT</a></nav>
+    <nav class="nav-m" aria-label="Sections"><a href="#rideSection">RIDE</a><a href="#raceSection">RACE</a><a href="#dragSection">DRAG</a><a href="#copilotSection">CO-PILOT</a><button type="button" id="moreBtn" aria-haspopup="true">MORE</button></nav>
 
     <main>
       <section class="hero">
@@ -97,7 +99,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
         </div>
           <div class="ck-dial" id="ckDial"></div>
           <div class="ck-tgt" id="ckTgtLbl"></div>
-          <div class="ck-stats"><div><small>DISTANCE</small><b id="ckDist">0.00</b><i>km</i></div><div><small>TIME</small><b id="ckTime">00:00:00</b></div><div><small>AVG</small><b id="ckAvg">—</b><i>km/h</i></div><div><small>MAX</small><b id="ckMax">—</b><i>km/h</i></div></div>
+          <div class="ck-stats"><div><small>DISTANCE</small><b id="ckDist">0.00</b><i class="u-dst">km</i></div><div><small>TIME</small><b id="ckTime">00:00:00</b></div><div><small>AVG</small><b id="ckAvg">—</b><i class="u-spd">km/h</i></div><div><small>MAX</small><b id="ckMax">—</b><i class="u-spd">km/h</i></div></div>
           <div class="ride-actions">
               <button class="primary-btn wide start-ride" id="startBtn"><span class="play">▶</span> START RIDE</button>
               <button class="secondary-btn wide" id="ckPlan">PLAN ROUTE <span>↗</span></button>
@@ -109,7 +111,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
           <div class="map-panel">
             <div class="map-topline"><span>LIVE ROUTE MAP</span><span id="mapHint">Waiting for GPS</span></div>
             <div id="map" aria-label="Live ride map"></div>
-            <div class="hud" id="hud" hidden><div class="hud-t"><b id="hudTarget">--</b><small>TARGET km/h</small></div><div class="hud-m"><span id="hudMsg"></span><small id="hudDist"></small></div></div>
+            <div class="hud" id="hud" hidden><div class="hud-t"><b id="hudTarget">--</b><small>TARGET <span class="u-spd" data-up>KM/H</span></small></div><div class="hud-m"><span id="hudMsg"></span><small id="hudDist"></small></div></div>
             <div class="map-controls">
               <button id="locateBtn" class="map-control" title="Locate me">◎</button>
               <button id="clearRouteBtn" class="map-control" title="Clear route">↺</button>
@@ -153,9 +155,11 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
               <div id="rowB" hidden><small>FINISH POINT</small><b id="ptB">Not set</b><button class="secondary-btn" id="setB">USE MY LOCATION</button></div>
               <p class="legal">Or tap the map to place the point. Lines are 30 m gates; laps are timed by GPS (about ±1 s).</p>
             </div>
-            <div class="race-live"><div class="wide"><small>TOTAL TIME</small><b id="rTime">0:00.0</b></div><div><small>CURRENT LAP</small><b id="rLap">—</b></div><div><small>LAPS</small><b id="rLaps">0</b></div><div><small>DISTANCE km</small><b id="rDist">0.00</b></div><div><small>SPEED km/h</small><b id="rSpeed">0</b></div></div>
+            <div class="race-live"><div class="wide"><small>TOTAL TIME</small><b id="rTime">0:00.0</b></div><div><small>CURRENT LAP</small><b id="rLap">—</b></div><div><small>LAPS</small><b id="rLaps">0</b></div><div><small>DISTANCE <span class="u-dst">km</span></small><b id="rDist">0.00</b></div><div><small>SPEED <span class="u-spd">km/h</span></small><b id="rSpeed">0</b></div></div>
             <canvas id="rcTrack" width="560" height="110" aria-label="Your lap path"></canvas>
-            <button class="primary-btn" id="raceGo">START RACE</button><p class="legal" id="raceMsg">Set your start point, then press start.</p>
+            <button class="primary-btn" id="raceGo">START RACE</button>
+            <button class="secondary-btn" id="rcChallenge">CHALLENGE A FRIEND</button>
+            <small class="dg-hint">Send your course to a friend. They race the same line on their own phone and send you their result link to compare in Records.</small><p class="legal" id="raceMsg">Set your start point, then press start.</p>
             <ol class="laps" id="lapList"></ol><div id="raceHistory"></div>
           </div>
         </div>
@@ -177,6 +181,24 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
             <div id="dgHist"></div>
             <p class="legal">How it works: press ARM and stand still until it says READY. Pick AUTO START (the clock starts the moment GPS sees you move) or 3 · 2 · 1 COUNTDOWN (you hear the count, then go; reaction time is approximate). Use only on a closed drag strip or track, never on public roads. Timing is from GPS speed, so expect about ±0.2 s on 0–100. A clear view of the sky helps.</p>
           </div>
+        </div>
+      </section>
+
+      <section class="records" id="recordsSection">
+        <div class="section-heading"><div><p class="eyebrow">RECORDS</p><h2>Your numbers. Side by side.</h2></div><span class="section-note">TICK TWO TO COMPARE</span></div>
+        <div class="rec-tabs"><button class="chip on" data-rt="drag">DRAG</button><button class="chip" data-rt="race">RACE</button><button class="chip" data-rt="ride">RIDE</button></div>
+        <div class="rec-import" id="recImportRow" hidden><input id="recUrl" type="url" placeholder="Paste a friend’s result link" aria-label="Friend result link"><button class="secondary-btn" id="recImport">IMPORT</button></div>
+        <div class="rec-table" id="recTable"></div>
+        <div class="rec-compare" id="recCompare" hidden></div>
+      </section>
+
+      <section class="cond" id="condSection">
+        <div class="section-heading"><div><p class="eyebrow">ROAD &amp; WEATHER</p><h2>Know the conditions before you go.</h2></div><span class="section-note">ESTIMATE · NOT A GUARANTEE</span></div>
+        <div class="cond-card">
+          <p class="cond-intro">Weather, wind, rain and visibility at your exact spot, plus the road type and speed limit from OpenStreetMap. You get a clear verdict: good, caution or risky.</p>
+          <button class="primary-btn" id="condGo">CHECK CONDITIONS HERE</button>
+          <p class="legal cond-err" id="condErr" hidden></p>
+          <div id="condOut" hidden></div>
         </div>
       </section>
 
@@ -213,13 +235,34 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
       </section>
     </main>
 
-    <footer><span>SLAY MOTO</span><span>RIDE RESPONSIBLY · STAY PRESENT</span><span>© 2026</span></footer>
+    <section class="about" id="aboutSection">
+        <div class="section-heading"><div><p class="eyebrow">ABOUT</p><h2>Built for the line. Motorcycle or car.</h2></div></div>
+        <div class="about-grid">
+          <div class="about-card"><h3>What is SLAY MOTO?</h3><p>A racing co-pilot that runs in your phone’s browser. It reads the road ahead, warns you before corners, times your laps and drag runs, and turns every run into a record you can compare and share. Racing. Performance. Lifestyle.</p></div>
+          <div class="about-card"><h3>Your settings</h3>
+            <p class="wl">Vehicle</p><div class="wchips"><button class="chip" data-veh="moto">MOTORCYCLE</button><button class="chip" data-veh="car">CAR</button></div>
+            <p class="wl">Units</p><div class="wchips"><button class="chip" data-unit="kmh">KM/H</button><button class="chip" data-unit="mph">MPH</button></div>
+            <p class="wl">Name shown to friends</p><input id="setName" class="set-input" maxlength="20" placeholder="Rider" aria-label="Your name">
+            <button class="secondary-btn" id="tourBtn">REPLAY THE TOUR</button></div>
+          <div class="about-card"><h3>Privacy &amp; safety</h3><ul class="wsteps"><li>Your records and settings stay on your device. There are no accounts and no tracking.</li><li>Street names and weather are requested from OpenStreetMap and Open-Meteo using your coordinates.</li><li>Race and Drag are for closed tracks and drag strips only.</li><li>Guidance is advisory. Never touch your phone while moving and always obey the law.</li></ul></div>
+          <div class="about-card"><h3>Contact</h3><p>Questions, ideas or a bug? Reach us here.</p><div class="contact-btns" id="contactBtns"></div></div>
+        </div>
+        <div class="faq">
+          <details><summary>Does it keep tracking with the screen off?</summary><p>No. A web app cannot read GPS in the background. Keep the screen on and the phone mounted. SLAY MOTO keeps the screen awake while you ride.</p></details>
+          <details><summary>How accurate are the times and speeds?</summary><p>Speed and times come from your phone’s GPS, about once per second. Expect roughly ±0.2 s on a 0–100 run and ±1 s on laps. A clear view of the sky helps.</p></details>
+          <details><summary>How does lean angle work?</summary><p>It uses your phone’s motion sensors after you calibrate the bike upright, with GPS as a backup. It is an estimate, not a measured racing value.</p></details>
+          <details><summary>Can I use it in a car?</summary><p>Yes. Choose Car in settings. Lean angle is hidden and the corner model assumes more grip than a motorcycle.</p></details>
+          <details><summary>How do I race a friend?</summary><p>In Race, set your line and tap Challenge a friend. They open the link, race the same course on their phone and send you their result link. Import it in Records to compare.</p></details>
+        </div>
+      </section>
+
+      <footer><span>SLAY MOTO</span><span>RIDE RESPONSIBLY · STAY PRESENT</span><span><a href="#aboutSection">About</a> · <a href="#recordsSection">Records</a> · <a href="#condSection">Conditions</a> · <a href="#aboutSection" id="tourLink">Tour</a> · © 2026</span></footer>
   </div>
 
   <div class="copilot" id="copilot" hidden>
     <div class="cp-top"><img class="cp-logo" src="assets/logo.webp" alt="SLAY"><div class="cp-btns"><button class="cp-close" id="cpCal">⊙ CALIBRATE</button><button class="cp-close" id="cpClose">✕ EXIT</button></div></div>
     <div class="cp-msg" id="cpMsg">WAITING FOR GPS…</div>
-    <div class="cp-speedrow"><div class="cp-speed"><b id="cpSpeed">0</b><small>KM/H</small></div><div class="cp-tgt"><small>TARGET</small><b id="cpTarget">--</b><div class="cp-bar"><i id="cpBar"></i><u id="cpTick"></u></div></div></div>
+    <div class="cp-speedrow"><div class="cp-speed"><b id="cpSpeed">0</b><small class="u-spd" data-up>KM/H</small></div><div class="cp-tgt"><small>TARGET</small><b id="cpTarget">--</b><div class="cp-bar"><i id="cpBar"></i><u id="cpTick"></u></div></div></div>
     <div class="cp-gauge" id="cpGauge"></div>
     <div class="cp-turn"><div class="t" id="cpL"><i>◀</i>LEFT</div><div class="cp-mid"><b id="cpLean">0°</b><small id="cpSide">UPRIGHT</small><em id="cpG">0.00 g</em><span id="cpMax">MAX L 0° · MAX R 0°</span></div><div class="t" id="cpR"><i>▶</i>RIGHT</div></div>
     <div class="cp-card"><div class="cp-corner" id="cpCorner">ROAD AHEAD CLEAR</div><div class="cp-approach"><i id="cpDist"></i></div><small id="cpSrc">CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE</small></div>
@@ -236,7 +279,7 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
     </div>
   </div>
 
-  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RECORD</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a></div></div></div>
+  <div class="modal-backdrop" id="imgModal" hidden><div class="modal"><button class="modal-close" id="closeImg" aria-label="Close">×</button><p class="eyebrow">YOUR RECORD</p><img id="rideImg" alt="Route you rode" style="width:100%;border-radius:12px"><div class="modal-actions"><a class="primary-btn" id="dlImg" download="slay-moto-ride.png">DOWNLOAD IMAGE</a><button class="secondary-btn" id="shStory">SHARE STORY · 9:16</button><button class="secondary-btn" id="shGpx">EXPORT GPX</button><button class="secondary-btn" id="shLink" hidden>SEND RESULT TO A FRIEND</button></div></div></div>
 
   <div class="modal-backdrop" id="routeModal" hidden>
     <div class="modal">
@@ -251,12 +294,17 @@ addEventListener('pageshow',function(e){if(e.persisted)top();});})();
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="guidance.js?v=19"></script>
-  <script src="app.js?v=13"></script>
-  <script src="shape.js?v=18"></script>
-  <script src="pro.js?v=21"></script>
-  <script src="drag.js?v=18"></script>
-  <script src="cockpit.js?v=20"></script>
-  <script src="gate.js?v=16"></script>
+  <script src="units.js?v=24"></script>
+  <script src="guidance.js?v=24"></script>
+  <script src="app.js?v=24"></script>
+  <script src="shape.js?v=24"></script>
+  <script src="pro.js?v=24"></script>
+  <script src="drag.js?v=24"></script>
+  <script src="share.js?v=24"></script>
+  <script src="records.js?v=24"></script>
+  <script src="conditions.js?v=24"></script>
+  <script src="welcome.js?v=24"></script>
+  <script src="cockpit.js?v=24"></script>
+  <script src="gate.js?v=24"></script>
 </body>
 </html>
