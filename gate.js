@@ -1,4 +1,4 @@
-/* SLAY MOTO location gate: before any location-based action, make sure location is on (explain, ask, guide). */
+/* SLAY RACING location gate: before any location-based action, make sure location is on (explain, ask, guide). */
 (()=>{
 const q=id=>document.getElementById(id),UA=navigator.userAgent;
 const IOS=/iP(hone|ad|od)/.test(UA)||(/Mac/.test(UA)&&navigator.maxTouchPoints>1),AND=/Android/.test(UA);
@@ -8,7 +8,7 @@ const STEPS={
   and:['Swipe down from the top of the screen and turn Location (GPS) on.','Tap the lock or ⋮ icon next to the address → Site settings → Location → Allow.','Set Location accuracy to Precise.','Come back here and tap Try again.'],
   gen:['Turn on Location in your device settings.','Allow location for this site in your browser’s site settings.','Come back here and tap Try again.']};
 const T={
-  ask:['Turn on your location','Slay Moto needs your live location to track your ride, time your laps and warn you before corners. Tap the button, then choose “Allow” (precise location).','ENABLE LOCATION',0],
+  ask:['Turn on your location','Slay Racing needs your live location to track your ride, time your laps and warn you before corners. Tap the button, then choose “Allow” (precise location).','ENABLE LOCATION',0],
   check:['Checking your location…','Looking for a GPS signal. This can take a few seconds outdoors.','CHECKING…',0],
   denied:['Location is blocked','Your browser or phone is blocking location for this site. Turn it on, then try again.','TRY AGAIN',1],
   unavail:['Can’t find your position','Location (GPS) looks switched off or the signal is weak. Turn it on and go somewhere with a clear view of the sky.','TRY AGAIN',1]};
