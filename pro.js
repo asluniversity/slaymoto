@@ -1,4 +1,4 @@
-/* SLAY MOTO pro: Race mode (start/finish gates, laps) + Live co-pilot (corner warning, lean estimate) */
+/* SLAY RACING pro: Race mode (start/finish gates, laps) + Live co-pilot (corner warning, lean estimate) */
 (()=>{
 const q=id=>document.getElementById(id),G=9.81,D=Math.PI/180;
 const hav=(a,b)=>{const x=Math.sin((b[0]-a[0])*D/2)**2+Math.cos(a[0]*D)*Math.cos(b[0]*D)*Math.sin((b[1]-a[1])*D/2)**2;return 12742000*Math.asin(Math.sqrt(x));};
@@ -63,7 +63,7 @@ function hist(){const l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');
 q('raceHistory').onclick=e=>{const d=e.target.closest('.rh');if(d)showRace(JSON.parse(localStorage.getItem('slayMotoRaces')||'[]')[d.dataset.i]);};
 function raceImage(r){
   const W=1080,H=1720,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
-  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY MOTO · RACE RECORD',60,90);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-60-lw,40,lw,72);}
+  g.fillStyle='#05080d';g.fillRect(0,0,W,H);g.fillStyle='#38bdf8';g.font='700 40px sans-serif';g.fillText('SLAY RACING · RACE RECORD',60,90);if(LOGO.complete&&LOGO.naturalWidth){const lw=72*LOGO.naturalWidth/LOGO.naturalHeight;g.drawImage(LOGO,W-60-lw,40,lw,72);}
   g.fillStyle='#8aa0b4';g.font='24px sans-serif';g.fillText(new Date(r.date).toLocaleString()+'  ·  '+(r.mode==='circuit'?'CIRCUIT':'POINT TO POINT'),60,130);
   const vs=p.map(x=>x[2]),mn=Math.min(...vs),mx=Math.max(...vs)||1,col=v=>`hsl(${200-200*((v-mn)/((mx-mn)||1))},90%,55%)`;
   if(p.length>1){
@@ -86,7 +86,7 @@ function raceImage(r){
   else{g.fillStyle='#eef7f6';g.font='22px sans-serif';r.laps.slice(0,6).forEach((l,i)=>g.fillText('LAP '+(i+1)+'   '+fmt(l),60+(i%2)*330,1480+Math.floor(i/2)*34));}
   g.fillStyle='#8aa0b4';g.fillText('FROM  '+(r.A||'start point').slice(0,48),60,1690);if(r.mode==='p2p')g.fillText('TO      '+(r.B||'finish point').slice(0,48),560,1690);
   return c;}
-function showRace(r){if(!r)return;window.__rec={type:'race',rec:r};const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-race.png';q('imgModal').hidden=false;}
+function showRace(r){if(!r)return;window.__rec={type:'race',rec:r};const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-racing-race.png';q('imgModal').hidden=false;}
 q('raceGo').onclick=()=>R.run?finish():start();hist();window.__slayRace={R,onR,start,finish,setPt};document.addEventListener('slayunits',hist);
 /* ---------- CO-PILOT ---------- */
 const C={g:'#7dd3fc',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
