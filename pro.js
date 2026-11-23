@@ -25,7 +25,7 @@ function rtrace(){const c=q('rcTrack');if(!c||!window.SlayShape)return;const g=c
 function laps(){const best=Math.min(...R.laps);let s=R.s0||0;q('lapList').innerHTML=R.laps.map((t,i)=>{const e=R.lapIdx[i]||R.pts.length,P=R.pts.slice(s,e).map(x=>[x[0],x[1]]);s=e;
   const th=window.SlayShape&&P.length>1?`<img class="lap-th" alt="" src="${SlayShape.thumb(P,72,48)}">`:'';return `<li${t===best?' class="best"':''}>${th}<span>LAP ${i+1}</span><b>${fmt(t)}</b></li>`;}).join('');}
 function tick(){const n=Date.now();q('rTime').textContent=R.t0?fmt(n-R.t0):'0:00.0';q('rLap').textContent=R.t0&&R.mode==='circuit'?fmt(n-R.lt0):'—';
-  q('rLaps').textContent=R.laps.length;q('rDist').textContent=(R.dist/1000).toFixed(2);q('rSpeed').textContent=Math.round(R.v);}
+  q('rLaps').textContent=R.laps.length;q('rDist').textContent=SlayUnits.dv(R.dist).toFixed(2);q('rSpeed').textContent=Math.round(SlayUnits.spd(R.v));}
 function start(){
   if(!R.A||(R.mode==='p2p'&&!R.B)){q('raceMsg').textContent='Set '+(R.A?'a finish':'a start')+' point first.';return;}
   Object.assign(R,{run:true,laps:[],dist:0,prev:null,p:null,away:false,max:0,v:0,t0:0,lt0:0,pts:[],lapIdx:[],skip:undefined,s0:0,bt:'enter'});q('lapList').innerHTML='';if(R.sm==='now')R.t0=R.lt0=Date.now();rtrace();
@@ -56,10 +56,10 @@ function finish(te){if(!R.run)return;R.run=false;navigator.geolocation.clearWatc
   const rec={mode:R.mode,date:Date.now(),total,dist:R.dist,max:R.max,avg,laps:R.laps,A:R.nA,B:R.nB,li:R.lapIdx.map(i=>Math.round(i/k)),s0:Math.round((R.s0||0)/k),sm:R.sm,pts};
   let l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');l.unshift(rec);l=l.slice(0,10);
   for(;;){try{localStorage.setItem('slayMotoRaces',JSON.stringify(l));break;}catch(e){if(l.length<=1)break;l.pop();}}
-  q('raceMsg').textContent=`Finished: ${fmt(total)} · ${(R.dist/1000).toFixed(2)} km · avg ${Math.round(avg)} km/h · top ${Math.round(R.max)} km/h`+(R.laps.length?` · best lap ${fmt(Math.min(...R.laps))}`:'')+(R.mode==='circuit'&&R.laps.length&&!R.skip&&Date.now()-R.lt0>10000?` · unfinished lap ${fmt(Date.now()-R.lt0)} not counted`:'');
+  q('raceMsg').textContent=`Finished: ${fmt(total)} · ${SlayUnits.dist(R.dist)} · avg ${Math.round(SlayUnits.spd(avg))} ${SlayUnits.sl()} · top ${Math.round(SlayUnits.spd(R.max))} ${SlayUnits.sl()}`+(R.laps.length?` · best lap ${fmt(Math.min(...R.laps))}`:'')+(R.mode==='circuit'&&R.laps.length&&!R.skip&&Date.now()-R.lt0>10000?` · unfinished lap ${fmt(Date.now()-R.lt0)} not counted`:'');
   hist();showRace(rec);}
 function hist(){const l=JSON.parse(localStorage.getItem('slayMotoRaces')||'[]');
-  q('raceHistory').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0"><img class="rh-th" alt="" src="${window.SlayShape?SlayShape.thumb(r.pts):''}"><div class="rh-m"><b>${r.mode==='circuit'?r.laps.length+' LAPS':'A → B'}</b><span>${fmt(r.total)} · ${(r.dist/1000).toFixed(2)} km · ${Math.round(r.avg)} km/h avg · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
+  q('raceHistory').innerHTML=l.map((r,i)=>`<div class="rh" data-i="${i}" tabindex="0"><img class="rh-th" alt="" src="${window.SlayShape?SlayShape.thumb(r.pts):''}"><div class="rh-m"><b>${r.mode==='circuit'?r.laps.length+' LAPS':'A → B'}</b><span>${fmt(r.total)} · ${SlayUnits.dist(r.dist)} · ${Math.round(SlayUnits.spd(r.avg))} ${SlayUnits.sl()} avg · ${new Date(r.date).toLocaleDateString()}</span></div></div>`).join('');}
 q('raceHistory').onclick=e=>{const d=e.target.closest('.rh');if(d)showRace(JSON.parse(localStorage.getItem('slayMotoRaces')||'[]')[d.dataset.i]);};
 function raceImage(r){
   const W=1080,H=1720,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),p=r.pts||[];
@@ -72,22 +72,22 @@ function raceImage(r){
     for(let i=1;i<p.length;i++){g.strokeStyle=col(p[i][2]);g.beginPath();g.moveTo(X(p[i-1]),Y(p[i-1]));g.lineTo(X(p[i]),Y(p[i]));g.stroke();}
     [[p[0],'#4fd18b'],[p[p.length-1],'#e5554f']].forEach(([x,cl])=>{g.beginPath();g.arc(X(x),Y(x),14,0,7);g.fillStyle=cl;g.fill();g.lineWidth=4;g.strokeStyle='#05080d';g.stroke();});
     for(let i=0;i<60;i++){g.fillStyle=col(mn+(mx-mn)*i/59);g.fillRect(60+i*8,830,8,14);}
-    g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText(mn+' km/h',60,870);g.textAlign='right';g.fillText(mx+' km/h',540,870);g.textAlign='left';}
-  [['TOTAL TIME',fmt(r.total)],['DISTANCE',(r.dist/1000).toFixed(2)+' km'],['LAPS',r.mode==='circuit'?r.laps.length:'—'],['AVG SPEED',Math.round(r.avg)+' km/h'],['TOP SPEED',Math.round(r.max)+' km/h'],['BEST LAP',r.laps.length?fmt(Math.min(...r.laps)):'—']]
+    g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText(Math.round(SlayUnits.spd(mn))+' '+SlayUnits.sl(),60,870);g.textAlign='right';g.fillText(Math.round(SlayUnits.spd(mx))+' '+SlayUnits.sl(),540,870);g.textAlign='left';}
+  [['TOTAL TIME',fmt(r.total)],['DISTANCE',SlayUnits.dist(r.dist)],['LAPS',r.mode==='circuit'?r.laps.length:'—'],['AVG SPEED',Math.round(SlayUnits.spd(r.avg))+' '+SlayUnits.sl()],['TOP SPEED',Math.round(SlayUnits.spd(r.max))+' '+SlayUnits.sl()],['BEST LAP',r.laps.length?fmt(Math.min(...r.laps)):'—']]
     .forEach(([l,v],i)=>{const x=60+(i%3)*330,y=930+Math.floor(i/3)*100;g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText(l,x,y);g.fillStyle='#eef7f6';g.font='700 40px sans-serif';g.fillText(v,x,y+46);});
   g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText('SPEED OVER TIME',60,1160);
   if(p.length>1){const T=p[p.length-1][3]||1,cx=x=>60+x/T*960,cy=v=>1400-v/mx*200;g.strokeStyle='rgba(138,160,180,.3)';g.lineWidth=1;g.strokeRect(60,1200,960,200);
     let cum=0;g.setLineDash([6,6]);r.laps.forEach(l=>{cum+=l/1000;g.beginPath();g.moveTo(cx(cum),1200);g.lineTo(cx(cum),1400);g.stroke();});g.setLineDash([]);
     g.beginPath();p.forEach((x,i)=>i?g.lineTo(cx(x[3]),cy(x[2])):g.moveTo(cx(x[3]),cy(x[2])));g.lineWidth=3;g.strokeStyle='#38bdf8';g.stroke();
-    g.fillStyle='#8aa0b4';g.fillText('0:00',60,1430);g.textAlign='right';g.fillText(fmt(T*1000)+'  ·  top '+mx+' km/h',1020,1430);g.textAlign='left';}
+    g.fillStyle='#8aa0b4';g.fillText('0:00',60,1430);g.textAlign='right';g.fillText(fmt(T*1000)+'  ·  top '+Math.round(SlayUnits.spd(mx))+' '+SlayUnits.sl(),1020,1430);g.textAlign='left';}
   if(r.li&&r.li.length&&r.laps.length){const L=r.laps,pp=r.pts||[],best=Math.min(...L);let s=r.s0||0;g.fillStyle='#8aa0b4';g.font='20px sans-serif';g.fillText('LAP SHAPES',60,1462);
     L.slice(0,6).forEach((l,i)=>{const e=r.li[i]||pp.length,seg=pp.slice(s,e),x=60+i*165,y=1476;s=e;g.fillStyle=l===best?'rgba(79,209,139,.16)':'rgba(255,255,255,.05)';g.fillRect(x,y,150,100);
       if(window.SlayShape&&seg.length>1)SlayShape.draw(g,seg.map(a=>[a[0],a[1],a[2]]),x+10,y+10,130,80,{lw:4});g.fillStyle=l===best?'#4fd18b':'#eef7f6';g.font='700 22px sans-serif';g.fillText('LAP '+(i+1)+'  '+fmt(l),x,y+130);});}
   else{g.fillStyle='#eef7f6';g.font='22px sans-serif';r.laps.slice(0,6).forEach((l,i)=>g.fillText('LAP '+(i+1)+'   '+fmt(l),60+(i%2)*330,1480+Math.floor(i/2)*34));}
   g.fillStyle='#8aa0b4';g.fillText('FROM  '+(r.A||'start point').slice(0,48),60,1690);if(r.mode==='p2p')g.fillText('TO      '+(r.B||'finish point').slice(0,48),560,1690);
   return c;}
-function showRace(r){if(!r)return;const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-race.png';q('imgModal').hidden=false;}
-q('raceGo').onclick=()=>R.run?finish():start();hist();window.__slayRace={R,onR,start,finish};
+function showRace(r){if(!r)return;window.__rec={type:'race',rec:r};const u=raceImage(r).toDataURL('image/png');q('rideImg').src=u;q('dlImg').href=u;q('dlImg').download='slay-moto-race.png';q('imgModal').hidden=false;}
+q('raceGo').onclick=()=>R.run?finish():start();hist();window.__slayRace={R,onR,start,finish,setPt};document.addEventListener('slayunits',hist);
 /* ---------- CO-PILOT ---------- */
 const C={g:'#7dd3fc',y:'#e7d25b',o:'#e58b52',r:'#e5554f'};
 const P={open:false,wid:null,prev:null,hp:null,w:0,lean:0,mL:0,mR:0};
@@ -132,14 +132,14 @@ function onC(pos){const c=pos.coords;if(c.accuracy>50)return;const t=pos.timesta
   let spd=c.speed!=null&&c.speed>=0?c.speed*3.6:null;
   if(spd==null&&P.prev){const dt=(t-P.prev.t)/1000;if(dt>0)spd=hav(P.prev.ll,[c.latitude,c.longitude])/dt*3.6;}
   P.prev={ll:[c.latitude,c.longitude],t};if(spd==null)spd=0;
-  lean(c,t,spd);q('cpSpeed').textContent=Math.round(spd);
+  lean(c,t,spd);q('cpSpeed').textContent=Math.round(SlayUnits.spd(spd));
   if(!S.ok)show(P.lean,'GPS ESTIMATE');
   if(Guide.hasRoute())Guide.update({lat:c.latitude,lng:c.longitude},spd);else{q('cpMsg').textContent='NO ROUTE · SPEED & LEAN ONLY';q('cpCorner').textContent='Plan a route to get corner warnings.';}}
 Guide.onInfo(i=>{if(!P.open)return;q('copilot').style.setProperty('--c',C[i.l]);q('cpMsg').textContent=i.msg;
   if(i.off){q('cpCorner').innerHTML='<span class="cc-h">OFF ROUTE</span><span class="cc-s">Return to the planned route for corner warnings.</span>';return;}
-  const tg=Math.round(i.allowed/5)*5,sc=Math.max(tg*1.4,1);q('cpTarget').textContent=tg;q('cpBar').style.width=Math.min(100,i.spd/sc*100)+'%';q('cpTick').style.left=tg/sc*100+'%';
+  const tg=Math.round(i.allowed/5)*5,sc=Math.max(tg*1.4,1);q('cpTarget').textContent=Math.round(SlayUnits.spd(tg)/5)*5;q('cpBar').style.width=Math.min(100,i.spd/sc*100)+'%';q('cpTick').style.left=tg/sc*100+'%';
   if(i.cd!=null){const f=v=>Math.round(Math.atan((v/3.6)**2/(i.cr*G))/D),n=f(i.spd),tl=f(i.ct);
-    q('cpCorner').innerHTML=`<span class="cc-h">CORNER IN <b>${i.cd} m</b></span><span class="cc-s">Slow to <b>${Math.round(i.ct/5)*5}</b> km/h</span><span class="cc-r">At your speed <b class="${n>40?'bad':''}">~${n}° lean</b> · at target <b>~${tl}°</b></span>`;q('cpDist').style.width=Math.max(0,100-i.cd/480*100)+'%';}
+    q('cpCorner').innerHTML=`<span class="cc-h">CORNER IN <b>${SlayUnits.sm(i.cd)}</b></span><span class="cc-s">Slow to <b>${Math.round(SlayUnits.spd(i.ct)/5)*5}</b> ${SlayUnits.sl()}</span><span class="cc-r">At your speed <b class="${n>40?'bad':''}">~${n}° lean</b> · at target <b>~${tl}°</b></span>`;q('cpDist').style.width=Math.max(0,100-i.cd/480*100)+'%';}
   else{q('cpCorner').innerHTML='<span class="cc-h">ROAD AHEAD CLEAR</span>';q('cpDist').style.width='0%';}});
 q('openCopilot').onclick=()=>{startSensors();P.open=true;P.mL=P.mR=0;P.prev=P.hp=null;Guide.reset();q('copilot').hidden=false;show(0,'CALIBRATE: HOLD BIKE UPRIGHT, THEN TAP CALIBRATE');
   q('cpMsg').textContent='WAITING FOR GPS…';lockScreen();try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}catch(e){}
