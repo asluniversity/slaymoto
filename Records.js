@@ -1,4 +1,4 @@
-/* SLAY MOTO records: table of rides / races / drags (+ friends' results), personal bests, and a side-by-side comparison. */
+/* SLAY RACING records: table of rides / races / drags (+ friends' results), personal bests, and a side-by-side comparison. */
 (()=>{
 const q=id=>document.getElementById(id),U=()=>window.SlayUnits;
 const get=k=>{try{return JSON.parse(localStorage.getItem(k)||'[]');}catch(e){return [];}};
@@ -61,7 +61,7 @@ function del(key){const t=key[0],i=+key.slice(1),k=KEYS[t],l=get(k);if(!confirm(
 q('recTable').addEventListener('change',e=>{const c=e.target.closest('[data-k]');if(!c)return;const k=c.dataset.k;sel=sel.filter(s=>s!==k);if(c.checked)sel.push(k);if(sel.length>2)sel.shift();render();});
 q('recTable').addEventListener('click',e=>{const d=e.target.closest('[data-del]');if(d){e.preventDefault();del(d.dataset.del);}});
 document.querySelectorAll('[data-rt]').forEach(b=>b.onclick=()=>{tab=b.dataset.rt;sel=[];render();});
-q('recImport').onclick=()=>{const v=q('recUrl').value.trim();if(!v)return;if(window.SlayShare.importUrl(v))q('recUrl').value='';else SlayToast('That does not look like a SLAY MOTO result link.');};
+q('recImport').onclick=()=>{const v=q('recUrl').value.trim();if(!v)return;if(window.SlayShare.importUrl(v))q('recUrl').value='';else SlayToast('That does not look like a SLAY RACING result link.');};
 document.addEventListener('slayfriends',render);document.addEventListener('slayunits',render);
 new IntersectionObserver(e=>{if(e[0].isIntersecting)render();},{rootMargin:'200px'}).observe(q('recordsSection'));
 render();
