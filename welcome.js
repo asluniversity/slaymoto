@@ -1,4 +1,4 @@
-/* SLAY MOTO welcome tour, vehicle setting, settings card, contact buttons and the mobile "More" menu. */
+/* SLAY RACING welcome tour, vehicle setting, settings card, contact buttons and the mobile "More" menu. */
 (()=>{
 const q=id=>document.getElementById(id),VK='slayMotoVehicle';
 function setVeh(v){v=v==='car'?'car':'moto';try{localStorage.setItem(VK,v);}catch(e){}document.body.dataset.vehicle=v;
@@ -13,7 +13,7 @@ if(C.telegram)L.push(['TELEGRAM','https://t.me/'+C.telegram.replace(/^@/,'')]);i
 q('contactBtns').innerHTML=L.length?L.map(([l,u])=>`<a class="secondary-btn" href="${u}" target="_blank" rel="noopener">${l}</a>`).join(''):'<p class="legal">Contact details will be added soon.</p>';
 /* tour */
 const STEPS=[
- ['Welcome to SLAY MOTO','<p>Your phone becomes a racing co-pilot: live speed, corner alerts, lap timing, drag runs and shareable records.</p><p class="wl">I drive a</p><div class="wchips"><button class="chip" data-veh="moto">MOTORCYCLE</button><button class="chip" data-veh="car">CAR</button></div><p class="wl">Show speed in</p><div class="wchips"><button class="chip" data-unit="kmh">KM/H</button><button class="chip" data-unit="mph">MPH</button></div>'],
+ ['Welcome to SLAY RACING','<p>Your phone becomes a racing co-pilot: live speed, corner alerts, lap timing, drag runs and shareable records.</p><p class="wl">I drive a</p><div class="wchips"><button class="chip" data-veh="moto">MOTORCYCLE</button><button class="chip" data-veh="car">CAR</button></div><p class="wl">Show speed in</p><div class="wchips"><button class="chip" data-unit="kmh">KM/H</button><button class="chip" data-unit="mph">MPH</button></div>'],
  ['Turn on your location','<p>Everything runs on your phone’s GPS: speed, route, laps and drag times. Your position stays on your device. Only street names and weather are looked up online.</p><button class="primary-btn" id="wlLoc">ENABLE LOCATION</button><p class="legal" id="wlLocMsg"></p>'],
  ['Mount it. Calibrate it.','<ul class="wsteps"><li>Fix the phone firmly to the handlebar or dash. Keep the screen on and the battery topped up.</li><li>Motorcycle: open Co-pilot, hold the bike upright and tap CALIBRATE once. Then lean angle works.</li><li>Pair a helmet or car speaker for voice alerts. The buttons are made for gloves.</li></ul>'],
  ['Ride smart','<ul class="wsteps"><li>Race and Drag are for closed tracks and strips only.</li><li>Alerts are advisory. They cannot see the road, weather or traffic.</li><li>Never touch the phone while moving. Obey the law and drive to the conditions.</li></ul>']];
